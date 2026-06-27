@@ -1,0 +1,2700 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="classic">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>单词本</title>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+/* ========== Reset & Base ========== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; -webkit-text-size-adjust: 100%; }
+
+/* ========== Theme Definitions ========== */
+:root, [data-theme="classic"] {
+  --bg: #f5f7fa;
+  --bg-card: #fff;
+  --bg-input: #fafbfc;
+  --bg-header: rgba(245, 247, 250, 0.85);
+  --bg-item: #f8f9fb;
+  --bg-badge: #e8ecf1;
+  --bg-tag: #eef2f8;
+  --bg-style-btn: #fff;
+  --bg-style-active: #eef4fb;
+  --bg-modal: #fff;
+  --text-primary: #1a1a2e;
+  --text-body: #333;
+  --text-secondary: #555;
+  --text-muted: #8e8ea0;
+  --text-hint: #aaa;
+  --accent: #4a90d9;
+  --accent-hover: #357abd;
+  --accent-light: #a0c4e8;
+  --accent-soft: #eef4fb;
+  --success: #34c759;
+  --success-hover: #2db84e;
+  --danger: #e74c3c;
+  --danger-bg: #fee;
+  --danger-hover: #fdd;
+  --border: #e0e4ea;
+  --border-light: #e8ecf1;
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.06);
+  --shadow-lg: 0 8px 30px rgba(0,0,0,0.08);
+  --toast-bg: rgba(0,0,0,0.8);
+  --overlay-bg: rgba(0,0,0,0.4);
+  --gradient-header: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --gradient-accent: linear-gradient(135deg, #4a90d9 0%, #667eea 100%);
+  --gradient-success: linear-gradient(135deg, #34c759 0%, #30d158 100%);
+}
+
+[data-theme="dark"] {
+  --bg: #1a1b2e;
+  --bg-card: #252640;
+  --bg-input: #2a2b45;
+  --bg-header: rgba(26, 27, 46, 0.9);
+  --bg-item: #2a2b45;
+  --bg-badge: #33345a;
+  --bg-tag: #2e2f55;
+  --bg-style-btn: #252640;
+  --bg-style-active: #363765;
+  --bg-modal: #252640;
+  --text-primary: #e8e8f0;
+  --text-body: #c8c8d8;
+  --text-secondary: #a0a0b8;
+  --text-muted: #6e6e8a;
+  --text-hint: #555570;
+  --accent: #7c8cf8;
+  --accent-hover: #6b7bf0;
+  --accent-light: #4a4a7a;
+  --accent-soft: #2e2f55;
+  --success: #4cd964;
+  --success-hover: #3dc855;
+  --danger: #ff6b6b;
+  --danger-bg: #3a2020;
+  --danger-hover: #452828;
+  --border: #363765;
+  --border-light: #33345a;
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.2);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.25);
+  --shadow-lg: 0 8px 30px rgba(0,0,0,0.35);
+  --toast-bg: rgba(30, 30, 50, 0.9);
+  --overlay-bg: rgba(0, 0, 0, 0.6);
+  --gradient-header: linear-gradient(135deg, #4a4a8a 0%, #6b4ba2 100%);
+  --gradient-accent: linear-gradient(135deg, #7c8cf8 0%, #a78bfa 100%);
+  --gradient-success: linear-gradient(135deg, #4cd964 0%, #34c759 100%);
+}
+
+[data-theme="mint"] {
+  --bg: #f0f7f4;
+  --bg-card: #fff;
+  --bg-input: #f5faf8;
+  --bg-header: rgba(240, 247, 244, 0.85);
+  --bg-item: #eef6f2;
+  --bg-badge: #d4ede2;
+  --bg-tag: #d8f0e5;
+  --bg-style-btn: #fff;
+  --bg-style-active: #d8f0e5;
+  --bg-modal: #fff;
+  --text-primary: #1a2e25;
+  --text-body: #2d4a3d;
+  --text-secondary: #4a6b5a;
+  --text-muted: #7a9e8d;
+  --text-hint: #9abfae;
+  --accent: #2d9d78;
+  --accent-hover: #238b68;
+  --accent-light: #a0d8c4;
+  --accent-soft: #d8f0e5;
+  --success: #27ae60;
+  --success-hover: #219a52;
+  --danger: #e74c3c;
+  --danger-bg: #fde8e6;
+  --danger-hover: #fdd4d0;
+  --border: #c8e0d5;
+  --border-light: #d8ece3;
+  --shadow-sm: 0 2px 8px rgba(45,157,120,0.06);
+  --shadow-md: 0 4px 16px rgba(45,157,120,0.08);
+  --shadow-lg: 0 8px 30px rgba(45,157,120,0.12);
+  --toast-bg: rgba(30, 50, 40, 0.85);
+  --overlay-bg: rgba(0,0,0,0.35);
+  --gradient-header: linear-gradient(135deg, #2d9d78 0%, #56c596 100%);
+  --gradient-accent: linear-gradient(135deg, #2d9d78 0%, #38c98e 100%);
+  --gradient-success: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+}
+
+[data-theme="lavender"] {
+  --bg: #f5f0fa;
+  --bg-card: #fff;
+  --bg-input: #f8f5fc;
+  --bg-header: rgba(245, 240, 250, 0.85);
+  --bg-item: #f2edf8;
+  --bg-badge: #e4d9f0;
+  --bg-tag: #ece4f6;
+  --bg-style-btn: #fff;
+  --bg-style-active: #ece4f6;
+  --bg-modal: #fff;
+  --text-primary: #2a1a3e;
+  --text-body: #3d2d55;
+  --text-secondary: #5a4a6e;
+  --text-muted: #8a7a9e;
+  --text-hint: #a89abf;
+  --accent: #8b5cf6;
+  --accent-hover: #7c3aed;
+  --accent-light: #c4b5fd;
+  --accent-soft: #ece4f6;
+  --success: #a78bfa;
+  --success-hover: #8b5cf6;
+  --danger: #ef4444;
+  --danger-bg: #fde8e8;
+  --danger-hover: #fdd0d0;
+  --border: #ddd0ee;
+  --border-light: #e8dff2;
+  --shadow-sm: 0 2px 8px rgba(139,92,246,0.06);
+  --shadow-md: 0 4px 16px rgba(139,92,246,0.08);
+  --shadow-lg: 0 8px 30px rgba(139,92,246,0.12);
+  --toast-bg: rgba(40, 30, 55, 0.85);
+  --overlay-bg: rgba(0,0,0,0.35);
+  --gradient-header: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%);
+  --gradient-accent: linear-gradient(135deg, #8b5cf6 0%, #c084fc 100%);
+  --gradient-success: linear-gradient(135deg, #a78bfa 0%, #c084fc 100%);
+}
+
+[data-theme="sunset"] {
+  --bg: #fdf6f0;
+  --bg-card: #fff;
+  --bg-input: #fef9f5;
+  --bg-header: rgba(253, 246, 240, 0.85);
+  --bg-item: #faf0e6;
+  --bg-badge: #f0dcc8;
+  --bg-tag: #f5e6d4;
+  --bg-style-btn: #fff;
+  --bg-style-active: #f5e6d4;
+  --bg-modal: #fff;
+  --text-primary: #3e2a1a;
+  --text-body: #4a3520;
+  --text-secondary: #6b5038;
+  --text-muted: #a08a70;
+  --text-hint: #bfa890;
+  --accent: #e67e22;
+  --accent-hover: #d35400;
+  --accent-light: #f0c8a0;
+  --accent-soft: #f5e6d4;
+  --success: #f39c12;
+  --success-hover: #e67e22;
+  --danger: #e74c3c;
+  --danger-bg: #fde8e6;
+  --danger-hover: #fdd4d0;
+  --border: #e8d8c8;
+  --border-light: #f0e4d8;
+  --shadow-sm: 0 2px 8px rgba(230,126,34,0.06);
+  --shadow-md: 0 4px 16px rgba(230,126,34,0.08);
+  --shadow-lg: 0 8px 30px rgba(230,126,34,0.12);
+  --toast-bg: rgba(50, 35, 20, 0.85);
+  --overlay-bg: rgba(0,0,0,0.35);
+  --gradient-header: linear-gradient(135deg, #e67e22 0%, #f39c12 100%);
+  --gradient-accent: linear-gradient(135deg, #e67e22 0%, #f1c40f 100%);
+  --gradient-success: linear-gradient(135deg, #f39c12 0%, #f1c40f 100%);
+}
+
+[data-theme="rose"] {
+  --bg: #fdf2f4;
+  --bg-card: #fff;
+  --bg-input: #fef7f8;
+  --bg-header: rgba(253, 242, 244, 0.85);
+  --bg-item: #faeaee;
+  --bg-badge: #f0d0d8;
+  --bg-tag: #f5dce3;
+  --bg-style-btn: #fff;
+  --bg-style-active: #f5dce3;
+  --bg-modal: #fff;
+  --text-primary: #3e1a24;
+  --text-body: #4a2030;
+  --text-secondary: #6b3848;
+  --text-muted: #a07080;
+  --text-hint: #bf90a0;
+  --accent: #e84393;
+  --accent-hover: #d63384;
+  --accent-light: #f0a0c8;
+  --accent-soft: #f5dce3;
+  --success: #fd79a8;
+  --success-hover: #e84393;
+  --danger: #e74c3c;
+  --danger-bg: #fde8e6;
+  --danger-hover: #fdd4d0;
+  --border: #eed0d8;
+  --border-light: #f2dce3;
+  --shadow-sm: 0 2px 8px rgba(232,67,147,0.06);
+  --shadow-md: 0 4px 16px rgba(232,67,147,0.08);
+  --shadow-lg: 0 8px 30px rgba(232,67,147,0.12);
+  --toast-bg: rgba(50, 20, 30, 0.85);
+  --overlay-bg: rgba(0,0,0,0.35);
+  --gradient-header: linear-gradient(135deg, #e84393 0%, #fd79a8 100%);
+  --gradient-accent: linear-gradient(135deg, #e84393 0%, #fd79a8 100%);
+  --gradient-success: linear-gradient(135deg, #fd79a8 0%, #fab1c8 100%);
+}
+
+/* ========== Body ========== */
+body {
+  font-family: "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text-body);
+  line-height: 1.6;
+  min-height: 100vh;
+  transition: background 0.3s, color 0.3s;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "kern" 1, "liga" 1;
+}
+
+/* ========== Icon System ========== */
+.icon {
+  width: 18px;
+  height: 18px;
+  stroke-width: 2;
+  vertical-align: -3px;
+  display: inline-block;
+  flex-shrink: 0;
+}
+.icon-sm {
+  width: 15px;
+  height: 15px;
+  stroke-width: 2;
+  vertical-align: -2px;
+}
+.icon-lg {
+  width: 22px;
+  height: 22px;
+  stroke-width: 2;
+  vertical-align: -5px;
+}
+.icon-btn {
+  width: 20px;
+  height: 20px;
+  stroke-width: 2;
+}
+.icon-inline {
+  width: 16px;
+  height: 16px;
+  stroke-width: 2;
+  vertical-align: -2px;
+  margin-right: 2px;
+}
+
+/* ========== Layout ========== */
+#app {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 0 16px 40px;
+  min-height: 100vh;
+}
+
+/* ========== Header ========== */
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 0 12px;
+  border-bottom: 1px solid var(--border-light);
+  margin-bottom: 20px;
+  position: sticky;
+  top: 0;
+  background: var(--bg-header);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 10;
+  transition: background 0.3s, border-color 0.3s;
+}
+header h1 {
+  font-size: 22px;
+  font-weight: 800;
+  background: var(--gradient-header);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 1px;
+  font-style: normal;
+}
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.word-count-badge {
+  font-size: 12px;
+  color: var(--text-muted);
+  background: var(--bg-badge);
+  padding: 3px 12px;
+  border-radius: 14px;
+  font-weight: 500;
+  transition: background 0.3s, color 0.3s;
+}
+.settings-btn {
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  padding: 6px;
+  color: var(--text-muted);
+  line-height: 1;
+  border-radius: 10px;
+  transition: color 0.2s, background 0.2s;
+}
+.settings-btn:hover {
+  color: var(--text-body);
+  background: var(--bg-badge);
+}
+
+/* ========== Search Section ========== */
+.search-section { margin-bottom: 20px; }
+.search-box {
+  display: flex;
+  gap: 10px;
+}
+.search-box input {
+  flex: 1;
+  padding: 14px 18px;
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.3s;
+  background: var(--bg-card);
+  color: var(--text-body);
+}
+.search-box input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+.search-box input::placeholder { color: var(--text-hint); }
+.search-box button {
+  padding: 14px 22px;
+  background: var(--gradient-accent);
+  color: #fff;
+  border: none;
+  border-radius: 14px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: transform 0.15s, box-shadow 0.2s, opacity 0.2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.search-box button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+.search-box button:active { transform: translateY(0); }
+.search-box button:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+/* ========== Word Result Card ========== */
+.word-card {
+  background: var(--bg-card);
+  border-radius: 18px;
+  padding: 22px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow-md);
+  display: none;
+  transition: background 0.3s, box-shadow 0.3s;
+}
+.word-card.visible { display: block; animation: fadeInUp 0.3s ease; }
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.word-card .word-header {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.word-card .word-header .word {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: 0.3px;
+}
+.word-card .word-header .phonetic {
+  font-size: 16px;
+  color: var(--text-muted);
+  font-style: italic;
+}
+.word-card .meanings { margin-bottom: 14px; }
+.word-card .meaning-item {
+  font-size: 15px;
+  color: var(--text-secondary);
+  padding: 3px 0;
+}
+.word-card .meaning-item .pos {
+  display: inline-block;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 6px;
+  margin-right: 6px;
+  font-weight: 600;
+}
+.word-card .examples { margin-bottom: 16px; }
+.word-card .example-item {
+  font-size: 14px;
+  color: var(--text-secondary);
+  padding: 6px 0 6px 14px;
+  border-left: 3px solid var(--border);
+  margin-bottom: 8px;
+  transition: border-color 0.2s;
+}
+.word-card .example-item:hover { border-left-color: var(--accent); }
+.word-card .example-item .en { color: var(--text-body); }
+.word-card .example-item .cn { color: var(--text-muted); font-size: 13px; }
+.word-card .add-btn {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  background: var(--gradient-success);
+  color: #fff;
+  border: none;
+  border-radius: 14px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.2s, opacity 0.2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.word-card .add-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+.word-card .add-btn.added {
+  background: var(--bg-badge);
+  color: var(--text-muted);
+  cursor: default;
+  box-shadow: none;
+  transform: none;
+}
+.word-card .add-btn:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+.word-card .error-msg {
+  text-align: center;
+  color: var(--danger);
+  font-size: 15px;
+  padding: 20px 0;
+}
+
+/* ========== Review Section ========== */
+.review-section { margin-top: 8px; }
+.review-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.review-header h2 {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.review-header .due-count {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+.style-buttons {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 4px;
+}
+.style-btn {
+  flex-shrink: 0;
+  padding: 10px 20px;
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg-style-btn);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+.style-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+.style-btn.active {
+  border-color: var(--accent);
+  background: var(--bg-style-active);
+  color: var(--accent);
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.style-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.review-text-card {
+  background: var(--bg-card);
+  border-radius: 18px;
+  padding: 22px;
+  box-shadow: var(--shadow-md);
+  display: none;
+  transition: background 0.3s, box-shadow 0.3s;
+}
+.review-text-card.visible { display: block; animation: fadeInUp 0.3s ease; }
+.review-text-card .review-content {
+  font-size: 15px;
+  line-height: 1.9;
+  color: var(--text-body);
+}
+.review-text-card .review-content .hl-word {
+  color: var(--accent);
+  font-weight: 700;
+  background: var(--accent-soft);
+  padding: 1px 4px;
+  border-radius: 4px;
+}
+.review-text-card .review-translation {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-light);
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.8;
+}
+.review-text-card .review-loading {
+  text-align: center;
+  padding: 30px 0;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+.review-text-card .review-empty {
+  text-align: center;
+  padding: 30px 0;
+  color: var(--text-muted);
+  font-size: 15px;
+}
+.review-text-card .review-error {
+  text-align: center;
+  padding: 20px 0;
+  color: var(--danger);
+  font-size: 14px;
+}
+
+/* Article number buttons */
+.review-body {
+  display: flex;
+  gap: 10px;
+}
+.article-nums {
+  display: none;
+  flex-direction: column;
+  gap: 6px;
+  flex-shrink: 0;
+  padding-top: 4px;
+}
+.article-nums.visible { display: flex; }
+.article-num-btn {
+  width: 32px;
+  height: 32px;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.article-num-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+.article-num-btn.active {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #fff;
+}
+
+/* Review action buttons */
+.review-actions {
+  display: none;
+  gap: 10px;
+  margin-top: 14px;
+}
+.review-actions.visible { display: flex; }
+.review-actions button {
+  flex: 1;
+  padding: 12px 8px;
+  border-radius: 14px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: transform 0.15s, background 0.2s, box-shadow 0.2s;
+}
+.review-actions button:hover { transform: translateY(-1px); }
+.review-actions button:active { transform: translateY(0); }
+.btn-save-article {
+  background: var(--bg-item);
+  color: var(--accent);
+  border: 2px solid var(--border) !important;
+}
+.btn-save-article:hover { background: var(--accent-soft); }
+.btn-copy-article {
+  background: var(--bg-item);
+  color: var(--text-muted);
+  border: 2px solid var(--border) !important;
+}
+.btn-copy-article:hover { background: var(--accent-soft); }
+.btn-all-due-done {
+  background: var(--gradient-success);
+  color: #fff;
+  border: none !important;
+}
+.btn-all-due-done:hover { opacity: 0.9; }
+/* Saved articles */
+.saved-article-item {
+  background: var(--bg-item);
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin-bottom: 10px;
+  position: relative;
+  transition: background 0.3s, box-shadow 0.2s;
+  cursor: pointer;
+}
+.saved-article-item:hover { box-shadow: var(--shadow-sm); }
+.saved-article-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+  font-size: 12px;
+  color: var(--text-hint);
+}
+.saved-article-style {
+  background: var(--accent-soft);
+  color: var(--accent);
+  padding: 2px 8px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 500;
+}
+.saved-article-words {
+  font-size: 13px;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+.saved-article-preview {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  overflow: hidden;
+}
+.saved-article-actions {
+  display: flex;
+  gap: 6px;
+  position: absolute;
+  top: 12px;
+  right: 12px;
+}
+.saved-article-delete,
+.saved-article-copy {
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, transform 0.15s;
+}
+.saved-article-delete:hover,
+.saved-article-copy:hover { transform: scale(1.05); }
+.saved-article-delete { background: var(--danger-bg); color: var(--danger); }
+.saved-article-delete:hover { background: var(--danger-hover); }
+.saved-article-copy { background: var(--accent-soft); color: var(--accent); }
+.saved-article-copy:hover { background: var(--accent-light); }
+
+/* ========== Spinner ========== */
+.spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ========== Settings Modal ========== */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: var(--overlay-bg);
+  z-index: 100;
+  align-items: flex-end;
+  justify-content: center;
+}
+.modal-overlay.open { display: flex; }
+.modal-overlay.open .modal-sheet { animation: slideUp 0.3s ease; }
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+.modal-sheet {
+  background: var(--bg-modal);
+  width: 100%;
+  max-width: 640px;
+  max-height: 85vh;
+  border-radius: 22px 22px 0 0;
+  padding: 24px 20px 32px;
+  overflow-y: auto;
+  transition: background 0.3s;
+}
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+.modal-header h2 {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.modal-close {
+  background: var(--bg-item);
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: var(--text-muted);
+  padding: 6px 10px;
+  line-height: 1;
+  border-radius: 10px;
+  transition: background 0.2s, color 0.2s;
+}
+.modal-close:hover {
+  background: var(--bg-badge);
+  color: var(--text-body);
+}
+
+.form-group { margin-bottom: 20px; }
+.form-group label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+}
+.form-group input[type="text"],
+.form-group input[type="password"],
+.form-group input[type="number"],
+.form-group select {
+  width: 100%;
+  padding: 12px 14px;
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  font-size: 15px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.3s;
+  background: var(--bg-input);
+  color: var(--text-body);
+}
+.form-group input[type="number"]::-webkit-outer-spin-button,
+.form-group input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.form-group input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+.form-group input:focus,
+.form-group select:focus {
+  border-color: var(--accent);
+  background: var(--bg-card);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+.form-group .hint {
+  font-size: 12px;
+  color: var(--text-hint);
+  margin-top: 4px;
+}
+
+/* Theme Selector */
+.theme-selector {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.theme-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 8px;
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: var(--bg-item);
+}
+.theme-option:hover {
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+.theme-option.active {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.theme-preview {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+.theme-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.3);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+}
+.theme-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+.settings-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 24px;
+}
+.settings-actions button {
+  padding: 12px;
+  border-radius: 14px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: transform 0.15s, background 0.2s, box-shadow 0.2s;
+}
+.settings-actions .btn-primary {
+  grid-column: 1 / -1;
+}
+.settings-actions button:hover { transform: translateY(-1px); }
+.settings-actions button:active { transform: translateY(0); }
+.btn-primary {
+  background: var(--gradient-accent);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.btn-primary:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+.btn-secondary { background: var(--bg-item); color: var(--text-secondary); }
+.btn-secondary:hover { background: var(--bg-badge); }
+.btn-export {
+  background: var(--bg-item);
+  color: var(--accent);
+  border: 2px solid var(--border) !important;
+}
+.btn-export:hover { background: var(--accent-soft); }
+
+/* ========== Word Book ========== */
+.wordbook-list { padding-bottom: 8px; }
+.wordbook-empty {
+  text-align: center;
+  padding: 40px 0;
+  color: var(--text-muted);
+  font-size: 15px;
+}
+.wb-item {
+  background: var(--bg-item);
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+  transition: background 0.3s, box-shadow 0.2s;
+}
+.wb-item:hover { box-shadow: var(--shadow-sm); }
+.wb-item-main { flex: 1; min-width: 0; }
+.wb-item-word {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.wb-item-phonetic {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-left: 6px;
+  font-style: italic;
+}
+.wb-item-meanings {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.wb-item-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 4px;
+}
+.wb-item-date {
+  font-size: 11px;
+  color: var(--text-hint);
+}
+.wb-item-level {
+  font-size: 11px;
+  color: var(--accent);
+  background: var(--accent-soft);
+  padding: 2px 8px;
+  border-radius: 8px;
+  font-weight: 500;
+}
+.wb-item-level.mastered { color: var(--success); background: var(--accent-soft); }
+.wb-delete-btn {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 10px;
+  background: var(--danger-bg);
+  color: var(--danger);
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.wb-delete-btn:hover { background: var(--danger-hover); transform: scale(1.05); }
+.wb-reset-btn {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 10px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.wb-reset-btn:hover { background: var(--accent-light); transform: scale(1.05); }
+
+/* ========== Toast ========== */
+.toast {
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--toast-bg);
+  color: #fff;
+  padding: 10px 24px;
+  border-radius: 12px;
+  font-size: 14px;
+  z-index: 200;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s, transform 0.3s;
+  white-space: nowrap;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+.toast.visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-4px);
+}
+
+/* ========== Responsive ========== */
+@media (min-width: 768px) {
+  #app { padding: 0 24px 40px; }
+  .modal-overlay { align-items: center; }
+  .modal-overlay.open .modal-sheet {
+    animation: fadeIn 0.2s ease;
+    border-radius: 22px;
+    max-height: 80vh;
+  }
+  @keyframes fadeIn { from { opacity: 0; transform: scale(0.97); } to { opacity: 1; transform: scale(1); } }
+}
+
+/* ========== Confirm Dialog ========== */
+.confirm-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: var(--overlay-bg);
+  z-index: 300;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+.confirm-overlay.open { display: flex; }
+.confirm-overlay.open .confirm-box { animation: fadeIn 0.2s ease; }
+.confirm-box {
+  background: var(--bg-modal);
+  border-radius: 18px;
+  padding: 28px 24px 20px;
+  max-width: 340px;
+  width: 90%;
+  box-shadow: var(--shadow-lg);
+  text-align: center;
+}
+.confirm-box .confirm-msg {
+  font-size: 15px;
+  color: var(--text-body);
+  line-height: 1.6;
+  margin-bottom: 22px;
+}
+.confirm-box .confirm-btns {
+  display: flex;
+  gap: 10px;
+}
+.confirm-box .confirm-btns button {
+  flex: 1;
+  padding: 12px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: transform 0.15s, background 0.2s;
+}
+.confirm-box .confirm-btns button:active { transform: scale(0.97); }
+.confirm-cancel {
+  background: var(--bg-item);
+  color: var(--text-secondary);
+}
+.confirm-cancel:hover { background: var(--bg-badge); }
+.confirm-ok {
+  background: var(--gradient-accent);
+  color: #fff;
+}
+.confirm-ok:hover { opacity: 0.9; }
+.confirm-ok.danger {
+  background: var(--danger);
+}
+.confirm-ok.danger:hover { opacity: 0.9; }
+
+/* ========== Wordbook Search ========== */
+.wb-search-box {
+  margin-bottom: 14px;
+}
+.wb-search-box input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  background: var(--bg-input);
+  color: var(--text-body);
+}
+.wb-search-box input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+.wb-search-box input::placeholder { color: var(--text-hint); }
+
+/* ========== Pronunciation Button ========== */
+.pron-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 8px;
+  color: var(--accent);
+  transition: background 0.2s;
+  vertical-align: middle;
+}
+.pron-btn:hover { background: var(--accent-soft); }
+
+/* ========== Due Words ========== */
+.due-count-link {
+  cursor: pointer;
+  color: var(--accent);
+  background: var(--accent-soft);
+  padding: 3px 10px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 13px;
+  transition: background 0.2s, transform 0.15s;
+}
+.due-count-link:hover { background: var(--accent-light); transform: translateY(-1px); }
+.due-item {
+  background: var(--bg-item);
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: background 0.3s, box-shadow 0.2s;
+}
+.due-item:hover { box-shadow: var(--shadow-sm); }
+.due-item-main { flex: 1; min-width: 0; }
+.due-item-word {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.due-item-phonetic {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-left: 6px;
+  font-style: italic;
+}
+.due-item-meanings {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.due-reset-btn {
+  flex-shrink: 0;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 10px;
+  background: var(--danger-bg);
+  color: var(--danger);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  white-space: nowrap;
+}
+.due-reset-btn:hover { background: var(--danger-hover); transform: scale(1.03); }
+.due-item-reset {
+  opacity: 0.5;
+  pointer-events: none;
+}
+.due-delete-btn {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 10px;
+  background: var(--danger-bg);
+  color: var(--danger);
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.due-delete-btn:hover { background: var(--danger-hover); transform: scale(1.05); }
+
+/* ========== Scrollbar ========== */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-hint); }
+
+/* ========== Selection ========== */
+::selection { background: var(--accent-soft); color: var(--accent); }
+</style>
+</head>
+<body>
+
+<div id="app">
+  <!-- Header -->
+  <header>
+    <h1>单词本</h1>
+    <div class="header-right">
+      <button class="settings-btn" id="settingsBtn" aria-label="设置"><i data-lucide="settings" class="icon-btn"></i></button>
+    </div>
+  </header>
+
+  <!-- Search Section -->
+  <section class="search-section">
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="输入英文单词…" autocomplete="off" autocapitalize="none" spellcheck="false">
+      <button id="searchBtn">查词</button>
+    </div>
+  </section>
+
+  <!-- Word Result -->
+  <div class="word-card" id="wordCard">
+    <div id="wordResult"></div>
+  </div>
+
+  <!-- Review Section -->
+  <section class="review-section">
+    <div class="review-header">
+      <h2>生成文章</h2>
+      <span class="due-count" id="dueCount">计算中…</span>
+    </div>
+    <div class="style-buttons" id="styleButtons">
+      <button class="style-btn" data-style="story"><i data-lucide="book-heart" class="icon-inline"></i>深刻故事</button>
+      <button class="style-btn" data-style="dialogue"><i data-lucide="message-circle" class="icon-inline"></i>有趣对话</button>
+      <button class="style-btn" data-style="news"><i data-lucide="newspaper" class="icon-inline"></i>新闻资讯</button>
+    </div>
+    <div class="review-body">
+      <div class="article-nums" id="articleNums"></div>
+      <div class="review-text-card" id="reviewCard" style="flex:1;min-width:0">
+        <div id="reviewContent"></div>
+      </div>
+    </div>
+    <div class="review-actions" id="reviewActions">
+      <button class="btn-save-article" id="saveArticleBtn"><i data-lucide="download" class="icon-inline"></i>保存</button>
+      <button class="btn-copy-article" id="copyArticleBtn"><i data-lucide="clipboard-copy" class="icon-inline"></i>复制</button>
+    </div>
+  </section>
+</div>
+
+<!-- Settings Modal -->
+<div class="modal-overlay" id="settingsModal">
+  <div class="modal-sheet">
+    <div class="modal-header">
+      <h2>我的设置</h2>
+      <button class="modal-close" id="modalCloseBtn"><i data-lucide="x" class="icon-btn"></i></button>
+    </div>
+    <div class="form-group">
+      <label>主题风格</label>
+      <div class="theme-selector" id="themeSelector">
+        <div class="theme-option active" data-theme="classic">
+          <div class="theme-preview">
+            <span class="theme-dot" style="background:#4a90d9"></span>
+            <span class="theme-dot" style="background:#667eea"></span>
+            <span class="theme-dot" style="background:#34c759"></span>
+          </div>
+          <span class="theme-label">经典蓝</span>
+        </div>
+        <div class="theme-option" data-theme="dark">
+          <div class="theme-preview">
+            <span class="theme-dot" style="background:#7c8cf8"></span>
+            <span class="theme-dot" style="background:#a78bfa"></span>
+            <span class="theme-dot" style="background:#4cd964"></span>
+          </div>
+          <span class="theme-label">暗夜模式</span>
+        </div>
+        <div class="theme-option" data-theme="mint">
+          <div class="theme-preview">
+            <span class="theme-dot" style="background:#2d9d78"></span>
+            <span class="theme-dot" style="background:#56c596"></span>
+            <span class="theme-dot" style="background:#27ae60"></span>
+          </div>
+          <span class="theme-label">薄荷绿</span>
+        </div>
+        <div class="theme-option" data-theme="lavender">
+          <div class="theme-preview">
+            <span class="theme-dot" style="background:#8b5cf6"></span>
+            <span class="theme-dot" style="background:#a78bfa"></span>
+            <span class="theme-dot" style="background:#c084fc"></span>
+          </div>
+          <span class="theme-label">薰衣草</span>
+        </div>
+        <div class="theme-option" data-theme="sunset">
+          <div class="theme-preview">
+            <span class="theme-dot" style="background:#e67e22"></span>
+            <span class="theme-dot" style="background:#f39c12"></span>
+            <span class="theme-dot" style="background:#f1c40f"></span>
+          </div>
+          <span class="theme-label">暖阳橙</span>
+        </div>
+        <div class="theme-option" data-theme="rose">
+          <div class="theme-preview">
+            <span class="theme-dot" style="background:#e84393"></span>
+            <span class="theme-dot" style="background:#fd79a8"></span>
+            <span class="theme-dot" style="background:#fab1c8"></span>
+          </div>
+          <span class="theme-label">樱花粉</span>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="apiEndpoint">API 地址</label>
+      <input type="text" id="apiEndpoint" placeholder="https://api.openai.com">
+      <div class="hint">兼容 OpenAI 的 API 端点</div>
+    </div>
+    <div class="form-group">
+      <label for="apiKey">API Key</label>
+      <input type="password" id="apiKey" placeholder="sk-...">
+    </div>
+    <div class="form-group">
+      <label for="apiModel">模型</label>
+      <input type="text" id="apiModel" placeholder="gpt-4o-mini">
+    </div>
+    <div class="form-group">
+      <label for="randomCount">复习单词数量</label>
+      <input type="number" id="randomCount" min="1" max="100" value="10" placeholder="10">
+      <div class="hint">每次生成复习文章时随机选取的单词数量</div>
+    </div>
+    <div class="form-group">
+      <label for="wordCount">文章字数</label>
+      <input type="number" id="wordCount" min="30" max="500" value="100" step="10" placeholder="100">
+      <div class="hint">生成复习文章的目标英文单词数（约数）</div>
+    </div>
+    <div class="form-group">
+      <label for="difficulty">语言难度</label>
+      <select id="difficulty">
+        <option value="beginner">初级 — 基础词汇、简单句式</option>
+        <option value="intermediate" selected>中级 — 常用词汇、复合句式</option>
+        <option value="advanced">高级 — 高级词汇、复杂表达</option>
+      </select>
+    </div>
+    <div class="settings-actions">
+      <button class="btn-secondary" id="exportBtn"><i data-lucide="file-down" class="icon-inline"></i>导出 JSON</button>
+      <button class="btn-secondary" id="importBtn"><i data-lucide="file-up" class="icon-inline"></i>导入 JSON</button>
+      <button class="btn-secondary" id="savedArticlesBtn"><i data-lucide="file-text" class="icon-inline"></i>已保存文章</button>
+      <button class="btn-secondary" id="clearApiKeyBtn"><i data-lucide="key-round" class="icon-inline"></i>清除 API Key</button>
+      <button class="btn-primary" id="saveSettingsBtn"><i data-lucide="save" class="icon-inline"></i>保存设置</button>
+    </div>
+    <input type="file" id="importFileInput" accept=".json" style="display:none">
+  </div>
+</div>
+
+<!-- Word Book Modal -->
+<div class="modal-overlay" id="wordbookModal">
+  <div class="modal-sheet">
+    <div class="modal-header">
+      <h2>我的单词本 <span class="word-count-badge" id="wbWordCount">0 词</span></h2>
+      <button class="modal-close" id="wbModalCloseBtn"><i data-lucide="x" class="icon-btn"></i></button>
+    </div>
+    <div class="wb-search-box"><input type="text" id="wbSearchInput" placeholder="搜索单词…" autocomplete="off" spellcheck="false"></div>
+    <div id="wordbookList"></div>
+  </div>
+</div>
+
+<!-- Saved Articles Modal -->
+<div class="modal-overlay" id="savedArticlesModal">
+  <div class="modal-sheet">
+    <div class="modal-header">
+      <h2>已保存的文章</h2>
+      <button class="modal-close" id="saModalCloseBtn"><i data-lucide="x" class="icon-btn"></i></button>
+    </div>
+    <div id="savedArticlesList"></div>
+  </div>
+</div>
+
+<!-- Due Words Modal -->
+<div class="modal-overlay" id="dueWordsModal">
+  <div class="modal-sheet">
+    <div class="modal-header">
+      <h2>本次复习</h2>
+      <button class="modal-close" id="dwModalCloseBtn"><i data-lucide="x" class="icon-btn"></i></button>
+    </div>
+    <div id="dueWordsList"></div>
+  </div>
+</div>
+
+<!-- Confirm Dialog -->
+<div class="confirm-overlay" id="confirmOverlay">
+  <div class="confirm-box">
+    <div class="confirm-msg" id="confirmMsg"></div>
+    <div class="confirm-btns">
+      <button class="confirm-cancel" id="confirmCancelBtn">取消</button>
+      <button class="confirm-ok" id="confirmOkBtn">确定</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ============================================================
+//  Constants
+// ============================================================
+const MAX_REVIEW_LEVEL = 7; // Total times to review each word
+
+const STYLES = {
+  story: {
+    label: '深刻故事',
+    prompt: '用日常生活场景创作一篇蕴含人生感悟的深刻故事，包含所有给定单词。故事需有真实细腻的情节，结尾能引发读者思考，体现对人性或生活的深层理解。'
+  },
+  dialogue: {
+    label: '有趣对话',
+    prompt: '用两三个角色之间的有趣对话创作一篇短文，包含所有给定单词。对话需生动自然、有幽默感或反转，能体现人物性格，让读者在轻松愉快的氛围中记住这些单词。'
+  },
+  news: {
+    label: '新闻资讯',
+    prompt: '用新闻报道的风格创作一篇简讯，包含所有给定单词。语气客观专业，结构清晰，包含标题和正文，像一篇真实的新闻报道。'
+  }
+};
+
+const DIFFICULTY_MAP = {
+  beginner: '初级（使用基础词汇和简单句式，句子以简单句为主，避免复杂从句）',
+  intermediate: '中级（使用常用词汇和复合句式，可适当使用定语从句、状语从句等）',
+  advanced: '高级（使用高级词汇和复杂表达，包含学术词汇、固定搭配和复杂语法结构）'
+};
+
+const DEFAULT_SETTINGS = {
+  apiEndpoint: '',
+  apiKey: '',
+  model: '',
+  difficulty: 'intermediate',
+  theme: 'classic',
+  randomCount: 10,
+  wordCount: 100
+};
+
+// ============================================================
+//  State
+// ============================================================
+let words = [];       // Array of word objects
+let settings = {};    // Settings object
+let lookupCache = {}; // Simple in-memory cache to avoid re-fetching same word
+let savedArticles = [];  // Saved review articles
+
+// ============================================================
+//  Data Persistence
+// ============================================================
+function loadData() {
+  try {
+    const w = localStorage.getItem('wordApp_words');
+    words = w ? JSON.parse(w) : [];
+  } catch { words = []; }
+
+  try {
+    const s = localStorage.getItem('wordApp_settings');
+    settings = s ? JSON.parse(s) : { ...DEFAULT_SETTINGS };
+    // Migration: ensure theme field exists
+    if (!settings.theme) settings.theme = 'classic';
+  } catch { settings = { ...DEFAULT_SETTINGS }; }
+
+  try {
+    const a = localStorage.getItem('wordApp_articles');
+    savedArticles = a ? JSON.parse(a) : [];
+  } catch { savedArticles = []; }
+
+  // Load lookup cache (expire after 7 days)
+  try {
+    const c = localStorage.getItem('wordApp_lookupCache');
+    if (c) {
+      const parsed = JSON.parse(c);
+      const now = Date.now();
+      Object.keys(parsed).forEach(key => {
+        if (now - (parsed[key]._cachedAt || 0) < 7 * 24 * 60 * 60 * 1000) {
+          lookupCache[key] = parsed[key];
+        }
+      });
+    }
+  } catch {}
+}
+
+function saveWords() {
+  localStorage.setItem('wordApp_words', JSON.stringify(words));
+}
+
+function saveSettings() {
+  localStorage.setItem('wordApp_settings', JSON.stringify(settings));
+}
+
+function saveArticles() {
+  localStorage.setItem('wordApp_articles', JSON.stringify(savedArticles));
+}
+
+// ============================================================
+//  Theme System
+// ============================================================
+function applyTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+}
+
+function initThemeSelector() {
+  const selector = document.getElementById('themeSelector');
+  if (!selector) return;
+
+  // Set active state
+  selector.querySelectorAll('.theme-option').forEach(opt => {
+    opt.classList.toggle('active', opt.dataset.theme === (settings.theme || 'classic'));
+  });
+
+  // Click handler
+  selector.querySelectorAll('.theme-option').forEach(opt => {
+    opt.addEventListener('click', () => {
+      const theme = opt.dataset.theme;
+      selector.querySelectorAll('.theme-option').forEach(o => o.classList.remove('active'));
+      opt.classList.add('active');
+      applyTheme(theme);
+      settings.theme = theme;
+      // Live preview — save immediately
+      saveSettings();
+    });
+  });
+}
+
+// ============================================================
+//  Review Management
+// ============================================================
+function getDueWords() {
+  // Return all words that haven't reached max review level
+  return words.filter(w => w.level < MAX_REVIEW_LEVEL);
+}
+
+function getRandomWordsForReview() {
+  // Generate random words when style button is clicked
+  const availableWords = words.filter(w => w.level < MAX_REVIEW_LEVEL);
+  if (availableWords.length === 0) return [];
+  const count = Math.min(settings.randomCount || 10, availableWords.length);
+  const shuffled = [...availableWords].sort(() => Math.random() - 0.5);
+  return shuffled.slice(0, count);
+}
+
+function advanceWordReview(word) {
+  if (word.level < MAX_REVIEW_LEVEL) {
+    word.level += 1;
+  }
+  word.lastReviewedAt = new Date().toISOString();
+}
+
+// ============================================================
+//  API
+// ============================================================
+function buildApiHeaders() {
+  const headers = { 'Content-Type': 'application/json' };
+  if (settings.apiKey) {
+    headers['Authorization'] = `Bearer ${settings.apiKey}`;
+  }
+  return headers;
+}
+
+function buildApiUrl() {
+  let base = settings.apiEndpoint || DEFAULT_SETTINGS.apiEndpoint;
+  base = base.replace(/\/+$/, '');
+  // If the user already included the full path, use it as-is
+  if (base.includes('/chat/completions')) return base;
+  return `${base}/chat/completions`;
+}
+
+async function apiChat(messages, temperature = 0.3) {
+  const url = buildApiUrl();
+  const model = settings.model || DEFAULT_SETTINGS.model;
+
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: buildApiHeaders(),
+    body: JSON.stringify({
+      model,
+      messages,
+      temperature,
+      max_tokens: 2048
+    })
+  });
+
+  if (!res.ok) {
+    let errMsg = `API 请求失败 (${res.status})`;
+    try {
+      const errBody = await res.json();
+      if (errBody.error?.message) errMsg = errBody.error.message;
+    } catch {}
+    throw new Error(errMsg);
+  }
+
+  const data = await res.json();
+  const content = data.choices?.[0]?.message?.content;
+  if (!content) throw new Error('API 返回格式异常');
+  return content;
+}
+
+async function lookupWord(word) {
+  const cacheKey = word.toLowerCase().trim();
+  if (lookupCache[cacheKey]) return lookupCache[cacheKey];
+
+  const systemPrompt = `你是英语词典专家。请查询单词并提供以下信息，返回纯 JSON（不要 markdown 代码块标记）：
+
+{
+  "word": "查询到的单词",
+  "phonetic": "音标，如 /ɪɡˈzæmpəl/",
+  "meanings": [
+    {"pos": "词性，如v./n./adj./adv.", "definition": "中文释义，包含词性标注"}
+  ],
+  "examples": [
+    {"en": "英文例句", "cn": "中文翻译"}
+  ]
+}
+
+注意：
+- 如果英语中没有这个单词，请返回一个最有可能的单词
+- 提供 1-2 个主要释义
+- 提供 2 个例句
+- 不要添加任何额外文字`;
+
+  const content = await apiChat([
+    { role: 'system', content: systemPrompt },
+    { role: 'user', content: `查询单词: ${word.trim()}` }
+  ], 0);
+
+  // Try to extract JSON from the response
+  let jsonStr = content.trim();
+  // Remove potential markdown code block fences
+  jsonStr = jsonStr.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '');
+  // Find first { and last }
+  const start = jsonStr.indexOf('{');
+  const end = jsonStr.lastIndexOf('}');
+  if (start === -1 || end === -1) throw new Error('API 返回格式无法解析');
+  jsonStr = jsonStr.substring(start, end + 1);
+
+  const result = JSON.parse(jsonStr);
+  result._cachedAt = Date.now();
+  lookupCache[cacheKey] = result;
+  // Persist cache to localStorage
+  try { localStorage.setItem('wordApp_lookupCache', JSON.stringify(lookupCache)); } catch {}
+  return result;
+}
+
+async function generateReviewText(wordsToReview, styleId) {
+  const style = STYLES[styleId];
+  if (!style) throw new Error('无效的风格');
+
+  const wordList = wordsToReview.map(w => w.word);
+  const difficultyDesc = DIFFICULTY_MAP[settings.difficulty] || DIFFICULTY_MAP.intermediate;
+  const wordCount = settings.wordCount || 100;
+
+  const systemPrompt = `你是一位博学的英语专家。请严格遵循以下要求生成内容：
+
+## 任务
+用提供的单词列表创作一篇英文短文。
+
+## 要求
+1. 字数：约 ${wordCount} 词
+2. 语言难度：${difficultyDesc}
+3. 风格：${style.prompt}
+4. 必须包含列表中的全部单词
+5. 短文需自然流畅、有实际意义，不应是单词的简单罗列
+
+## 输出格式
+直接输出英文短文，然后空一行，输出"---"，再空一行，输出中文翻译。单词不要加粗标记，不要添加额外说明。`;
+
+  const content = await apiChat([
+    { role: 'system', content: systemPrompt },
+    { role: 'user', content: `请使用以下单词创作：${wordList.join('、')}` }
+  ], 0.8);
+
+  return content;
+}
+
+// ============================================================
+//  UI — Word Search & Result
+// ============================================================
+const searchInput = document.getElementById('searchInput');
+const searchBtn = document.getElementById('searchBtn');
+const wordCard = document.getElementById('wordCard');
+const wordResult = document.getElementById('wordResult');
+
+let isSearching = false;
+
+async function handleSearch() {
+  const word = searchInput.value.trim();
+  if (!word) {
+    showToast('请输入要查询的单词');
+    return;
+  }
+  if (isSearching) return;
+
+  if (!settings.apiKey && !settings.apiEndpoint) {
+    showToast('请先在设置中配置 API');
+    return;
+  }
+
+  isSearching = true;
+  searchBtn.disabled = true;
+  searchBtn.textContent = '查询中…';
+  wordCard.classList.remove('visible');
+
+  try {
+    const data = await lookupWord(word);
+    renderWordResult(data);
+  } catch (err) {
+    wordResult.innerHTML = `<div class="error-msg">${escapeHtml(err.message)}</div>`;
+    wordCard.classList.add('visible');
+  } finally {
+    isSearching = false;
+    searchBtn.disabled = false;
+    searchBtn.textContent = '查词';
+    searchInput.value = '';
+  }
+}
+
+function renderWordResult(data) {
+  const isAdded = words.some(w => w.word.toLowerCase() === data.word.toLowerCase());
+
+  let meaningsHtml = '';
+  if (data.meanings && data.meanings.length) {
+    meaningsHtml = '<div class="meanings">' + data.meanings.map(m =>
+      `<div class="meaning-item"><span class="pos">${escapeHtml(m.pos)}</span>${escapeHtml(m.definition)}</div>`
+    ).join('') + '</div>';
+  }
+
+  let examplesHtml = '';
+  if (data.examples && data.examples.length) {
+    examplesHtml = '<div class="examples">' + data.examples.map(e =>
+      `<div class="example-item"><div class="en">${escapeHtml(e.en)}</div><div class="cn">${escapeHtml(e.cn)}</div></div>`
+    ).join('') + '</div>';
+  }
+
+  const btnClass = isAdded ? 'add-btn added' : 'add-btn';
+  const btnText = isAdded ? '✓ 已在单词本中' : '✚ 加入单词本';
+  const btnDisabled = isAdded ? 'disabled' : '';
+
+  wordResult.innerHTML = `
+    <div class="word-header">
+      <span class="word">${escapeHtml(data.word)}</span>
+      <button class="pron-btn" title="朗读发音"><i data-lucide="volume-2" class="icon-sm"></i></button>
+      <span class="phonetic">${escapeHtml(data.phonetic || '')}</span>
+    </div>
+    ${meaningsHtml}
+    ${examplesHtml}
+    <button class="${btnClass}" id="addWordBtn" ${btnDisabled}>${btnText}</button>
+  `;
+
+  wordCard.classList.add('visible');
+
+  if (!isAdded) {
+    document.getElementById('addWordBtn').addEventListener('click', () => addWord(data));
+  }
+
+  // Pronunciation button
+  const pronBtn = wordResult.querySelector('.pron-btn');
+  if (pronBtn) {
+    pronBtn.addEventListener('click', () => speakWord(data.word));
+  }
+  lucide.createIcons({ nodes: [wordResult] });
+}
+
+function addWord(data) {
+  if (words.some(w => w.word.toLowerCase() === data.word.toLowerCase())) {
+    showToast('该单词已在单词本中');
+    return;
+  }
+
+  const now = new Date();
+
+  const wordEntry = {
+    id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+    word: data.word,
+    phonetic: data.phonetic || '',
+    meanings: data.meanings || [],
+    examples: data.examples || [],
+    addedAt: now.toISOString(),
+    level: 0,
+    lastReviewedAt: null
+  };
+
+  words.push(wordEntry);
+  saveWords();
+  updateDueCount();
+
+  // Update add button
+  const btn = document.getElementById('addWordBtn');
+  if (btn) {
+    btn.textContent = '✓ 已加入单词本';
+    btn.classList.add('added');
+    btn.disabled = true;
+  }
+
+  showToast('已加入单词本');
+}
+
+// ============================================================
+//  UI — Review Section
+// ============================================================
+const dueCountEl = document.getElementById('dueCount');
+const styleButtons = document.getElementById('styleButtons');
+const reviewCard = document.getElementById('reviewCard');
+const reviewContent = document.getElementById('reviewContent');
+const reviewActions = document.getElementById('reviewActions');
+const articleNums = document.getElementById('articleNums');
+const saveArticleBtn = document.getElementById('saveArticleBtn');
+const copyArticleBtn = document.getElementById('copyArticleBtn');
+
+let isGeneratingReview = false;
+let currentStyle = null;
+let lastReviewRawText = '';      // Raw API response for saving
+let lastReviewWords = [];        // Words used in the current review
+let reviewHistory = [];          // [ { styleId, styleLabel, rawText, words } ]
+let activeArticleIdx = -1;       // currently viewed article index
+let thisSessionReviewWords = []; // Words selected for this session (empty until article is generated)
+
+function updateDueCount() {
+  const due = getDueWords();
+  const total = words.length;
+  const prevDueCount = parseInt(dueCountEl.dataset.dueCount || '0');
+  dueCountEl.dataset.dueCount = due.length;
+  // Clear history when new due words appear (transition from 0 to positive)
+  if (due.length > 0 && prevDueCount === 0 && reviewHistory.length > 0) {
+    reviewHistory = [];
+    activeArticleIdx = -1;
+    thisSessionReviewWords = []; // Clear session words when due list changes
+    renderArticleNums();
+    hideReviewActions();
+    reviewCard.classList.remove('visible');
+  }
+  // Display session review count if article has been generated, otherwise show available count
+  const displayCount = thisSessionReviewWords.length > 0 ? thisSessionReviewWords.length : due.length;
+  const labelText = thisSessionReviewWords.length > 0 ? '本次复习' : '可复习单词';
+  dueCountEl.innerHTML = displayCount > 0
+    ? `<span class="due-count-link" id="dueWordsLink">${labelText} ${displayCount} 词</span> · <span class="due-count-link" id="viewWordbookLink">共 ${total} 词</span>`
+    : total > 0
+      ? `全部完成！<i data-lucide="party-popper" class="icon-sm"></i> <span class="due-count-link" id="viewWordbookLink">共 ${total} 词</span>`
+      : '暂无单词';
+  lucide.createIcons({ nodes: [dueCountEl] });
+  const dueLink = document.getElementById('dueWordsLink');
+  if (dueLink) dueLink.addEventListener('click', openDueWords);
+  const wbLink = document.getElementById('viewWordbookLink');
+  if (wbLink) wbLink.addEventListener('click', openWordbook);
+}
+
+function showReviewActions() {
+  reviewActions.classList.add('visible');
+}
+
+function hideReviewActions() {
+  reviewActions.classList.remove('visible');
+}
+
+function renderArticleNums() {
+  if (reviewHistory.length === 0) {
+    articleNums.classList.remove('visible');
+    articleNums.innerHTML = '';
+    return;
+  }
+  articleNums.classList.add('visible');
+  articleNums.innerHTML = reviewHistory.map((_, i) =>
+    `<button class="article-num-btn${i === activeArticleIdx ? ' active' : ''}" data-idx="${i}">${i + 1}</button>`
+  ).join('');
+  articleNums.querySelectorAll('.article-num-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.dataset.idx);
+      loadArticleFromHistory(idx);
+    });
+  });
+}
+
+function loadArticleFromHistory(idx) {
+  const entry = reviewHistory[idx];
+  if (!entry) return;
+  activeArticleIdx = idx;
+  lastReviewRawText = entry.rawText;
+  lastReviewWords = entry.words;
+  currentStyle = entry.styleId;
+  renderReviewText(entry.rawText, entry.words);
+  showReviewActions();
+  reviewCard.classList.add('visible');
+  renderArticleNums();
+  // Update style button active state
+  document.querySelectorAll('.style-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.style === entry.styleId);
+  });
+}
+
+async function handleStyleClick(styleId) {
+  if (isGeneratingReview) return;
+
+  // Always use random selection
+  const due = getRandomWordsForReview();
+  
+  if (due.length === 0) {
+    reviewContent.innerHTML = '<div class="review-empty"><i data-lucide="party-popper" class="icon"></i> 没有待复习的单词</div>';
+    lucide.createIcons({ nodes: [reviewContent] });
+    reviewCard.classList.add('visible');
+    hideReviewActions();
+    return;
+  }
+
+  // Validate API is configured
+  if (!settings.apiKey && !settings.apiEndpoint) {
+    showToast('请先在设置中配置 API');
+    openSettings();
+    return;
+  }
+  if (!settings.apiKey) {
+    showToast('请先在设置中填写 API Key');
+    openSettings();
+    return;
+  }
+
+  isGeneratingReview = true;
+  currentStyle = styleId;
+
+  // Update button states
+  document.querySelectorAll('.style-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.style === styleId);
+    btn.disabled = true;
+  });
+
+  reviewContent.innerHTML = '<div class="review-loading"><span class="spinner"></span>生成复习短文…</div>';
+  reviewCard.classList.add('visible');
+  hideReviewActions();
+
+  try {
+    const text = await generateReviewText(due, styleId);
+    lastReviewRawText = text;
+    lastReviewWords = [...due];
+    thisSessionReviewWords = [...due]; // Save selected words for this session
+    
+    // Advance review progress for all selected words
+    due.forEach(w => advanceWordReview(w));
+    saveWords();
+    updateDueCount(); // Update the button label text
+    const styleLabel = STYLES[styleId]?.label || styleId;
+    reviewHistory.push({ styleId, styleLabel, rawText: text, words: [...due] });
+    activeArticleIdx = reviewHistory.length - 1;
+    renderArticleNums();
+    renderReviewText(text, due);
+    showReviewActions();
+
+    // Scroll to show review text
+    setTimeout(() => reviewCard.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+  } catch (err) {
+    reviewContent.innerHTML = `<div class="review-error">${escapeHtml(err.message)}</div>`;
+    hideReviewActions();
+  } finally {
+    isGeneratingReview = false;
+    document.querySelectorAll('.style-btn').forEach(btn => {
+      btn.disabled = false;
+    });
+  }
+}
+
+function renderReviewText(text, reviewedWords) {
+  const parts = text.split('---');
+  const english = parts[0]?.trim() || '';
+  const translation = parts[1]?.trim() || '';
+
+  // Highlight words that were in the review list
+  let highlighted = escapeHtml(english);
+  reviewedWords.forEach(w => {
+    // Replace *word* with highlighted span
+    const escaped = w.word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(`\\*${escaped}\\*`, 'gi');
+    highlighted = highlighted.replace(regex, `<span class="hl-word">${escapeHtml(w.word)}</span>`);
+  });
+  // Also handle any remaining asterisk pairs not matched
+  highlighted = highlighted.replace(/\*([^*]+)\*/g, '<span class="hl-word">$1</span>');
+
+  // Convert newlines to <br> for poem-style line breaks
+  highlighted = highlighted.replace(/\n/g, '<br>');
+
+  let html = `<div class="review-content">${highlighted}</div>`;
+  if (translation) {
+    html += `<div class="review-translation">${escapeHtml(translation).replace(/\n/g, '<br>')}</div>`;
+  }
+
+  reviewContent.innerHTML = html;
+}
+
+// ============================================================
+//  UI — Copy Article
+// ============================================================
+function copyTextToClipboard(english, chinese) {
+  const text = chinese ? `${english}\n\n---\n\n${chinese}` : english;
+  navigator.clipboard.writeText(text).then(() => {
+    showToast('已复制到剪贴板');
+  }).catch(() => {
+    showToast('复制失败，请重试');
+  });
+}
+
+function handleCopyArticle() {
+  if (!lastReviewRawText) {
+    showToast('没有可复制的文章');
+    return;
+  }
+
+  const parts = lastReviewRawText.split('---');
+  const english = parts[0]?.trim() || '';
+  const chinese = parts[1]?.trim() || '';
+  copyTextToClipboard(english, chinese);
+}
+
+function handleCopySavedArticle(id) {
+  const article = savedArticles.find(a => a.id === id);
+  if (!article) return;
+  copyTextToClipboard(article.englishText, article.chineseText);
+}
+
+// ============================================================
+//  UI — Save Article
+// ============================================================
+function handleSaveArticle() {
+  if (!lastReviewRawText) {
+    showToast('没有可保存的文章');
+    return;
+  }
+
+  const parts = lastReviewRawText.split('---');
+  const englishText = parts[0]?.trim() || '';
+  const chineseText = parts[1]?.trim() || '';
+  const wordList = lastReviewWords.map(w => w.word);
+  const styleLabel = currentStyle ? STYLES[currentStyle].label : '';
+
+  const article = {
+    id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+    englishText,
+    chineseText,
+    words: wordList,
+    style: currentStyle,
+    styleLabel,
+    savedAt: new Date().toISOString()
+  };
+
+  savedArticles.unshift(article);
+  saveArticles();
+  showToast('文章已保存');
+}
+
+// ============================================================
+//  UI — Due Words Modal
+// ============================================================
+const dueWordsModal = document.getElementById('dueWordsModal');
+const dueWordsList = document.getElementById('dueWordsList');
+const dwModalCloseBtn = document.getElementById('dwModalCloseBtn');
+let dueForgottenIds = new Set(); // words marked "不认识" in this session
+
+function renderDueWords() {
+  const displayWords = thisSessionReviewWords.length > 0 ? thisSessionReviewWords : [];
+  if (displayWords.length === 0) {
+    dueWordsList.innerHTML = '<div class="wordbook-empty"><i data-lucide="book-open" class="icon"></i> 本次尚未生成复习文章，请先选择风格</div>';
+    lucide.createIcons({ nodes: [dueWordsList] });
+    return;
+  }
+
+  dueWordsList.innerHTML = displayWords.map(w => {
+    const meaningText = w.meanings && w.meanings.length
+      ? w.meanings.map(m => `${m.pos} ${m.definition}`).join('；')
+      : '';
+    return `
+      <div class="due-item" data-id="${escapeHtml(w.id)}">
+        <div class="due-item-main">
+          <div>
+            <span class="due-item-word">${escapeHtml(w.word)}</span>
+            <button class="pron-btn due-pron-btn" title="朗读发音"><i data-lucide="volume-2" class="icon-sm"></i></button>
+            ${w.phonetic ? `<span class="due-item-phonetic">${escapeHtml(w.phonetic)}</span>` : ''}
+          </div>
+          ${meaningText ? `<div class="due-item-meanings">${escapeHtml(meaningText)}</div>` : ''}
+        </div>
+        <button class="due-reset-btn" title="标记不认识"><i data-lucide="rotate-ccw" class="icon-sm"></i> 不认识</button>
+        <button class="due-delete-btn" title="删除单词"><i data-lucide="trash-2" class="icon-sm"></i></button>
+      </div>
+    `;
+  }).join('');
+
+  // Pronunciation handlers
+  dueWordsList.querySelectorAll('.due-pron-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const item = e.currentTarget.closest('.due-item');
+      const w = words.find(w => w.id === item.dataset.id);
+      if (w) speakWord(w.word);
+    });
+  });
+
+  // "不认识" handlers
+  dueWordsList.querySelectorAll('.due-reset-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const item = e.currentTarget.closest('.due-item');
+      const id = item.dataset.id;
+      const word = words.find(w => w.id === id);
+      if (!word) return;
+      dueForgottenIds.add(id);
+      word.level = 0;
+      word.lastReviewedAt = null;
+      saveWords();
+      updateDueCount();
+      item.classList.add('due-item-reset');
+      btn.textContent = '已重置';
+      btn.disabled = true;
+      showToast(`「${word.word}」已重置，稍后重新复习`);
+    });
+  });
+
+  // Delete handlers
+  dueWordsList.querySelectorAll('.due-delete-btn').forEach(btn => {
+    btn.addEventListener('click', async (e) => {
+      e.stopPropagation();
+      const item = e.currentTarget.closest('.due-item');
+      const id = item.dataset.id;
+      const word = words.find(w => w.id === id);
+      if (!word) return;
+      if (!await showConfirm(`确定要从单词本中删除「${word.word}」吗？`, { danger: true })) return;
+      words = words.filter(w => w.id !== id);
+      thisSessionReviewWords = thisSessionReviewWords.filter(w => w.id !== id);
+      saveWords();
+      updateDueCount();
+      renderDueWords();
+      showToast(`已删除「${word.word}」`);
+    });
+  });
+
+  lucide.createIcons({ nodes: [dueWordsList] });
+}
+
+function openDueWords() {
+  // Only clear dueForgottenIds if we have session words to review
+  if (thisSessionReviewWords.length > 0) {
+    dueForgottenIds.clear();
+  }
+  renderDueWords();
+  dueWordsModal.classList.add('open');
+}
+
+function closeDueWords() {
+  dueWordsModal.classList.remove('open');
+}
+
+dwModalCloseBtn.addEventListener('click', closeDueWords);
+dueWordsModal.addEventListener('click', (e) => {
+  if (e.target === dueWordsModal) closeDueWords();
+});
+
+// ============================================================
+//  UI — Settings
+// ============================================================
+const settingsModal = document.getElementById('settingsModal');
+const settingsBtn = document.getElementById('settingsBtn');
+const modalCloseBtn = document.getElementById('modalCloseBtn');
+const saveSettingsBtn = document.getElementById('saveSettingsBtn');
+const exportBtn = document.getElementById('exportBtn');
+
+const apiEndpointInput = document.getElementById('apiEndpoint');
+const apiKeyInput = document.getElementById('apiKey');
+const apiModelInput = document.getElementById('apiModel');
+const difficultySelect = document.getElementById('difficulty');
+const randomCountInput = document.getElementById('randomCount');
+const wordCountInput = document.getElementById('wordCount');
+
+function openSettings() {
+  apiEndpointInput.value = settings.apiEndpoint || '';
+  apiKeyInput.value = settings.apiKey || '';
+  apiModelInput.value = settings.model || '';
+  difficultySelect.value = settings.difficulty || 'intermediate';
+  randomCountInput.value = settings.randomCount || 10;
+  wordCountInput.value = settings.wordCount || 100;
+
+  // Update theme selector active state
+  const selector = document.getElementById('themeSelector');
+  selector.querySelectorAll('.theme-option').forEach(opt => {
+    opt.classList.toggle('active', opt.dataset.theme === (settings.theme || 'classic'));
+  });
+
+  settingsModal.classList.add('open');
+}
+
+function closeSettings() {
+  settingsModal.classList.remove('open');
+}
+
+function saveSettingsHandler() {
+  settings.apiEndpoint = apiEndpointInput.value.trim() || DEFAULT_SETTINGS.apiEndpoint;
+  settings.apiKey = apiKeyInput.value.trim();
+  settings.model = apiModelInput.value.trim() || DEFAULT_SETTINGS.model;
+  settings.difficulty = difficultySelect.value;
+  settings.randomCount = parseInt(randomCountInput.value) || 10;
+  settings.wordCount = parseInt(wordCountInput.value) || 100;
+  // theme is already saved live on click, but keep this as fallback
+  const activeTheme = document.querySelector('.theme-option.active');
+  if (activeTheme) settings.theme = activeTheme.dataset.theme;
+
+  saveSettings();
+  applyTheme(settings.theme);
+  updateDueCount();
+  closeSettings();
+  showToast('设置已保存');
+}
+
+settingsBtn.addEventListener('click', openSettings);
+modalCloseBtn.addEventListener('click', closeSettings);
+settingsModal.addEventListener('click', (e) => {
+  if (e.target === settingsModal) closeSettings();
+});
+saveSettingsBtn.addEventListener('click', saveSettingsHandler);
+
+exportBtn.addEventListener('click', () => {
+  if (words.length === 0) {
+    showToast('没有单词可导出');
+    return;
+  }
+  const exportData = {
+    exportedAt: new Date().toISOString(),
+    wordCount: words.length,
+    settings: { ...settings },
+    words: words
+  };
+  const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `单词本_${new Date().toISOString().slice(0, 10)}.json`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showToast('导出成功');
+});
+
+// Import JSON
+document.getElementById('importBtn').addEventListener('click', () => {
+  document.getElementById('importFileInput').click();
+});
+
+document.getElementById('importFileInput').addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    try {
+      const data = JSON.parse(ev.target.result);
+      if (!data.words || !Array.isArray(data.words)) {
+        showToast('文件格式不正确');
+        return;
+      }
+      const importCount = data.words.length;
+      // Merge: skip duplicates by word text
+      const existing = new Set(words.map(w => w.word.toLowerCase()));
+      let added = 0;
+      data.words.forEach(w => {
+        if (!existing.has(w.word.toLowerCase())) {
+          words.push(w);
+          added++;
+        }
+      });
+      saveWords();
+      
+      // Import API Key settings if available
+      if (data.settings) {
+        if (data.settings.apiKey) {
+          settings.apiKey = data.settings.apiKey;
+        }
+        if (data.settings.apiEndpoint) {
+          settings.apiEndpoint = data.settings.apiEndpoint;
+        }
+        if (data.settings.model) {
+          settings.model = data.settings.model;
+        }
+        saveSettings();
+        // Update form fields if settings modal is open
+        if (settingsModal.classList.contains('open')) {
+          apiKeyInput.value = settings.apiKey || '';
+          apiEndpointInput.value = settings.apiEndpoint || '';
+          apiModelInput.value = settings.model || '';
+        }
+      }
+      
+      updateDueCount();
+      showToast(`导入完成：新增 ${added} 个，跳过 ${importCount - added} 个重复`);
+    } catch {
+      showToast('文件解析失败，请检查 JSON 格式');
+    }
+    e.target.value = '';
+  };
+  reader.readAsText(file);
+});
+
+// Clear API Key
+document.getElementById('clearApiKeyBtn').addEventListener('click', () => {
+  settings.apiKey = '';
+  saveSettings();
+  apiKeyInput.value = '';
+  showToast('API Key 已清除');
+});
+
+// ============================================================
+//  UI — Word Book
+// ============================================================
+const wordbookModal = document.getElementById('wordbookModal');
+const wordbookList = document.getElementById('wordbookList');
+const wbWordCount = document.getElementById('wbWordCount');
+const wbModalCloseBtn = document.getElementById('wbModalCloseBtn');
+
+function formatDate(isoStr) {
+  const d = new Date(isoStr);
+  const now = new Date();
+  const diffDays = Math.floor((now - d) / (1000 * 60 * 60 * 24));
+  if (diffDays === 0) return '今天';
+  if (diffDays === 1) return '昨天';
+  if (diffDays < 30) return `${diffDays} 天前`;
+  return `${d.getMonth() + 1}月${d.getDate()}日`;
+}
+
+function getLevelLabel(word) {
+  if (word.level >= MAX_REVIEW_LEVEL) return { text: '已掌握 ✓', cls: 'mastered' };
+  if (word.level === 0) return { text: '待首次复习', cls: '' };
+  return { text: `已复习 ${word.level}/${MAX_REVIEW_LEVEL} 次`, cls: '' };
+}
+
+function renderWordbook(filter = '') {
+  const filtered = filter
+    ? words.filter(w => w.word.toLowerCase().includes(filter.toLowerCase()))
+    : words;
+
+  if (filtered.length === 0) {
+    wordbookList.innerHTML = filter
+      ? '<div class="wordbook-empty">没有匹配的单词</div>'
+      : '<div class="wordbook-empty"><i data-lucide="book-open" class="icon"></i> 单词本为空，去搜索添加单词吧</div>';
+    lucide.createIcons({ nodes: [wordbookList] });
+    if (!filter) wbWordCount.textContent = '0 词';
+    return;
+  }
+
+  if (!filter) wbWordCount.textContent = `${words.length} 词`;
+  const sorted = [...filtered].sort((a, b) => {
+    if (a.level !== b.level) return a.level - b.level;
+    return new Date(b.addedAt) - new Date(a.addedAt);
+  });
+
+  wordbookList.innerHTML = '<div class="wordbook-list">' + sorted.map(w => {
+    const levelInfo = getLevelLabel(w);
+    const meaningText = w.meanings && w.meanings.length
+      ? w.meanings.map(m => `${m.pos} ${m.definition}`).join('；')
+      : '';
+    return `
+      <div class="wb-item" data-id="${escapeHtml(w.id)}">
+        <div class="wb-item-main">
+          <div>
+            <span class="wb-item-word">${escapeHtml(w.word)}</span>
+            <button class="pron-btn wb-pron-btn" title="朗读发音"><i data-lucide="volume-2" class="icon-sm"></i></button>
+            ${w.phonetic ? `<span class="wb-item-phonetic">${escapeHtml(w.phonetic)}</span>` : ''}
+          </div>
+          ${meaningText ? `<div class="wb-item-meanings">${escapeHtml(meaningText)}</div>` : ''}
+          <div class="wb-item-meta">
+            <span class="wb-item-date">${formatDate(w.addedAt)}添加</span>
+            <span class="wb-item-level ${levelInfo.cls}">${levelInfo.text}</span>
+          </div>
+        </div>
+        <button class="wb-reset-btn" title="重置复习"><i data-lucide="rotate-ccw" class="icon-sm"></i></button>
+        <button class="wb-delete-btn" title="删除单词"><i data-lucide="trash-2" class="icon-sm"></i></button>
+      </div>
+    `;
+  }).join('') + '</div>';
+
+  // Attach pronunciation handlers
+  wordbookList.querySelectorAll('.wb-pron-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const item = e.currentTarget.closest('.wb-item');
+      const w = words.find(w => w.id === item.dataset.id);
+      if (w) speakWord(w.word);
+    });
+  });
+
+  // Attach reset handlers
+  wordbookList.querySelectorAll('.wb-reset-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const item = e.currentTarget.closest('.wb-item');
+      const id = item.dataset.id;
+      resetWordReview(id);
+    });
+  });
+
+  // Attach delete handlers
+  wordbookList.querySelectorAll('.wb-delete-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const item = e.currentTarget.closest('.wb-item');
+      const id = item.dataset.id;
+      deleteWord(id);
+    });
+  });
+
+  lucide.createIcons({ nodes: [wordbookList] });
+}
+
+async function deleteWord(id) {
+  const word = words.find(w => w.id === id);
+  if (!word) return;
+  if (!await showConfirm(`确定要从单词本中删除「${word.word}」吗？`, { danger: true })) return;
+  words = words.filter(w => w.id !== id);
+  saveWords();
+  updateDueCount();
+  const searchVal = document.getElementById('wbSearchInput').value.trim();
+  renderWordbook(searchVal);
+  showToast(`已删除「${word.word}」`);
+}
+
+async function resetWordReview(id) {
+  const word = words.find(w => w.id === id);
+  if (!word) return;
+  if (!await showConfirm(`确定要重置「${word.word}」的复习进度吗？`)) return;
+  word.level = 0;
+  word.lastReviewedAt = null;
+  saveWords();
+  updateDueCount();
+  const searchVal = document.getElementById('wbSearchInput').value.trim();
+  renderWordbook(searchVal);
+  showToast(`已重置「${word.word}」的复习进度`);
+}
+
+function openWordbook() {
+  closeSettings();
+  const searchInput = document.getElementById('wbSearchInput');
+  searchInput.value = '';
+  renderWordbook();
+  wordbookModal.classList.add('open');
+  // Set up search handler (debounced)
+  let searchTimer;
+  searchInput.oninput = () => {
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(() => renderWordbook(searchInput.value.trim()), 200);
+  };
+}
+
+function closeWordbook() {
+  wordbookModal.classList.remove('open');
+}
+
+wbModalCloseBtn.addEventListener('click', closeWordbook);
+wordbookModal.addEventListener('click', (e) => {
+  if (e.target === wordbookModal) closeWordbook();
+});
+
+// ============================================================
+//  UI — Saved Articles
+// ============================================================
+const savedArticlesModal = document.getElementById('savedArticlesModal');
+const savedArticlesList = document.getElementById('savedArticlesList');
+const savedArticlesBtn = document.getElementById('savedArticlesBtn');
+const saModalCloseBtn = document.getElementById('saModalCloseBtn');
+
+function renderSavedArticles() {
+  if (savedArticles.length === 0) {
+    savedArticlesList.innerHTML = '<div class="wordbook-empty"><i data-lucide="file-text" class="icon"></i> 暂无保存的文章</div>';
+    lucide.createIcons({ nodes: [savedArticlesList] });
+    return;
+  }
+
+  savedArticlesList.innerHTML = savedArticles.map(a => {
+    const wordStr = a.words ? a.words.join('、') : '';
+    const preview = a.englishText ? a.englishText.slice(0, 120) + (a.englishText.length > 120 ? '…' : '') : '';
+    const label = a.styleLabel || '';
+    const dateStr = formatDate(a.savedAt);
+    return `
+      <div class="saved-article-item" data-id="${escapeHtml(a.id)}">
+        <div class="saved-article-meta">
+          <span>${dateStr}保存</span>
+          ${label ? `<span class="saved-article-style">${escapeHtml(label)}</span>` : ''}
+        </div>
+        ${wordStr ? `<div class="saved-article-words"><i data-lucide="pen-line" class="icon-sm"></i> ${escapeHtml(wordStr)}</div>` : ''}
+        <div class="saved-article-preview">${escapeHtml(preview)}</div>
+        <div class="saved-article-actions">
+          <button class="saved-article-copy" title="复制文章"><i data-lucide="clipboard-copy" class="icon-sm"></i></button>
+          <button class="saved-article-delete" title="删除文章"><i data-lucide="trash-2" class="icon-sm"></i></button>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  // Attach copy handlers
+  savedArticlesList.querySelectorAll('.saved-article-copy').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const item = e.currentTarget.closest('.saved-article-item');
+      const id = item.dataset.id;
+      handleCopySavedArticle(id);
+    });
+  });
+
+  // Attach delete handlers
+  savedArticlesList.querySelectorAll('.saved-article-delete').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const item = e.currentTarget.closest('.saved-article-item');
+      const id = item.dataset.id;
+      deleteArticle(id);
+    });
+  });
+
+  // Attach click-to-view handlers
+  savedArticlesList.querySelectorAll('.saved-article-item').forEach(item => {
+    item.addEventListener('click', (e) => {
+      // Don't open if clicking action buttons
+      if (e.target.closest('.saved-article-delete') || e.target.closest('.saved-article-copy')) return;
+      const id = item.dataset.id;
+      viewArticle(id);
+    });
+  });
+
+  lucide.createIcons({ nodes: [savedArticlesList] });
+}
+
+async function deleteArticle(id) {
+  const article = savedArticles.find(a => a.id === id);
+  if (!article) return;
+  if (!await showConfirm(`确定要删除这篇约 ${article.words?.length || 0} 个单词的文章吗？`, { danger: true })) return;
+  savedArticles = savedArticles.filter(a => a.id !== id);
+  saveArticles();
+  renderSavedArticles();
+  showToast('文章已删除');
+}
+
+function viewArticle(id) {
+  const article = savedArticles.find(a => a.id === id);
+  if (!article) return;
+
+  // Close saved articles modal
+  closeSavedArticles();
+
+  // Display the article in the review card
+  if (article.englishText) {
+    let html = `<div class="review-content">${escapeHtml(article.englishText).replace(/\n/g, '<br>')}</div>`;
+    if (article.chineseText) {
+      html += `<div class="review-translation">${escapeHtml(article.chineseText).replace(/\n/g, '<br>')}</div>`;
+    }
+    reviewContent.innerHTML = html;
+    reviewCard.classList.add('visible');
+    hideReviewActions();
+    setTimeout(() => reviewCard.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+  }
+
+  showToast(`已加载文章（${article.styleLabel || '未知风格'}）`);
+}
+
+function openSavedArticles() {
+  closeSettings();
+  renderSavedArticles();
+  savedArticlesModal.classList.add('open');
+}
+
+function closeSavedArticles() {
+  savedArticlesModal.classList.remove('open');
+}
+
+savedArticlesBtn.addEventListener('click', openSavedArticles);
+saModalCloseBtn.addEventListener('click', closeSavedArticles);
+savedArticlesModal.addEventListener('click', (e) => {
+  if (e.target === savedArticlesModal) closeSavedArticles();
+});
+
+// ============================================================
+//  Utilities
+// ============================================================
+function escapeHtml(str) {
+  return String(str).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.add('visible');
+  clearTimeout(toast._timer);
+  toast._timer = setTimeout(() => toast.classList.remove('visible'), 2500);
+}
+
+// Custom confirm dialog
+function showConfirm(msg, { danger = false } = {}) {
+  return new Promise(resolve => {
+    const overlay = document.getElementById('confirmOverlay');
+    const msgEl = document.getElementById('confirmMsg');
+    const okBtn = document.getElementById('confirmOkBtn');
+    const cancelBtn = document.getElementById('confirmCancelBtn');
+
+    msgEl.textContent = msg;
+    okBtn.className = 'confirm-ok' + (danger ? ' danger' : '');
+    overlay.classList.add('open');
+
+    function cleanup(result) {
+      overlay.classList.remove('open');
+      okBtn.removeEventListener('click', onOk);
+      cancelBtn.removeEventListener('click', onCancel);
+      overlay.removeEventListener('click', onBg);
+      resolve(result);
+    }
+    function onOk() { cleanup(true); }
+    function onCancel() { cleanup(false); }
+    function onBg(e) { if (e.target === overlay) cleanup(false); }
+
+    okBtn.addEventListener('click', onOk);
+    cancelBtn.addEventListener('click', onCancel);
+    overlay.addEventListener('click', onBg);
+  });
+}
+
+// Pronunciation
+function speakWord(word) {
+  if (!('speechSynthesis' in window)) {
+    showToast('当前浏览器不支持语音朗读');
+    return;
+  }
+  window.speechSynthesis.cancel();
+  const utter = new SpeechSynthesisUtterance(word);
+  utter.lang = 'en-US';
+  utter.rate = 0.9;
+  window.speechSynthesis.speak(utter);
+}
+
+// ============================================================
+//  Keyboard Shortcuts
+// ============================================================
+searchInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') handleSearch();
+});
+
+// ============================================================
+//  Initialization
+// ============================================================
+function init() {
+  loadData();
+
+  // Apply saved theme
+  applyTheme(settings.theme || 'classic');
+  initThemeSelector();
+
+  updateDueCount();
+
+  // De-duplicate words by word text (lowercase) — safety cleanup
+  const seen = new Set();
+  words = words.filter(w => {
+    const key = w.word.toLowerCase();
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+  saveWords();
+
+  searchBtn.addEventListener('click', handleSearch);
+
+  // Style buttons
+  document.querySelectorAll('.style-btn').forEach(btn => {
+    btn.addEventListener('click', () => handleStyleClick(btn.dataset.style));
+  });
+
+  // Review action buttons
+  saveArticleBtn.addEventListener('click', handleSaveArticle);
+  copyArticleBtn.addEventListener('click', handleCopyArticle);
+
+  // Show appropriate initial state
+  if (words.length === 0) {
+    reviewContent.innerHTML = '<div class="review-empty"><i data-lucide="book-open" class="icon"></i> 搜索单词并加入单词本，开始你的学习之旅</div>';
+    reviewCard.classList.add('visible');
+  }
+  // If there are words, keep review card empty until style button is clicked
+
+  hideReviewActions();
+
+  // Initialize all Lucide SVG icons
+  lucide.createIcons();
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
