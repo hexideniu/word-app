@@ -506,7 +506,7 @@ header h1 {
 }
 .style-btn {
   flex-shrink: 0;
-  padding: 10px 20px;
+  padding: 8px 14px;
   border: 2px solid var(--border);
   border-radius: 12px;
   background: var(--bg-style-btn);
@@ -1248,11 +1248,12 @@ header h1 {
   <!-- Review Section -->
   <section class="review-section">
     <div class="review-header">
-      <h2>生成文章</h2>
+      <h2>复习文章</h2>
       <span class="due-count" id="dueCount">计算中…</span>
     </div>
     <div class="style-buttons" id="styleButtons">
-      <button class="style-btn" data-style="story"><i data-lucide="book-heart" class="icon-inline"></i>深刻故事</button>
+      <button class="style-btn" data-style="auto"><i data-lucide="sparkles" class="icon-inline"></i>自动选择</button>
+      <button class="style-btn" data-style="story"><i data-lucide="book-heart" class="icon-inline"></i>离奇故事</button>
       <button class="style-btn" data-style="dialogue"><i data-lucide="message-circle" class="icon-inline"></i>有趣对话</button>
       <button class="style-btn" data-style="news"><i data-lucide="newspaper" class="icon-inline"></i>新闻资讯</button>
     </div>
@@ -1426,9 +1427,13 @@ header h1 {
 const MAX_REVIEW_LEVEL = 7; // Total times to review each word
 
 const STYLES = {
+  auto: {
+    label: '自动选择',
+    prompt: '自由发挥，根据单词的语义特点选择最合适的文体和风格（如故事、对话、新闻、散文、诗歌、寓言、书信等），让文章自然有趣。'
+  },
   story: {
-    label: '深刻故事',
-    prompt: '创作一篇寓意深刻的故事，题材自选。'
+    label: '离奇故事',
+    prompt: '创作一篇离奇的故事，题材自选。'
   },
   dialogue: {
     label: '有趣对话',
@@ -1436,7 +1441,7 @@ const STYLES = {
   },
   news: {
     label: '新闻资讯',
-    prompt: '用新闻报道的风格创作一篇简讯。'
+    prompt: '创作一篇略带讽刺的新闻简讯。'
   }
 };
 
