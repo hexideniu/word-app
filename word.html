@@ -506,7 +506,7 @@ header h1 {
 }
 .style-btn {
   flex-shrink: 0;
-  padding: 8px 14px;
+  padding: 8px 10px;
   border: 2px solid var(--border);
   border-radius: 12px;
   background: var(--bg-style-btn);
@@ -582,14 +582,14 @@ header h1 {
 /* Article number buttons */
 .review-body {
   display: flex;
+  flex-direction: column;
   gap: 10px;
 }
 .article-nums {
   display: none;
-  flex-direction: column;
-  gap: 6px;
-  flex-shrink: 0;
-  padding-top: 4px;
+  flex-direction: row;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 .article-nums.visible { display: flex; }
 .article-num-btn {
@@ -1354,6 +1354,22 @@ header h1 {
       <div class="hint">生成复习文章的目标英文单词数（约数）</div>
     </div>
     <div class="form-group">
+      <label for="writerRole">写作角色</label>
+      <select id="writerRole">
+        <option value="writer">作家 — 富有文学性和感染力</option>
+        <option value="journalist">记者 — 客观中立、信息密集</option>
+        <option value="teacher">老师 — 清晰易懂、循循善诱</option>
+        <option value="poet">诗人 — 唯美浪漫、意境深远</option>
+        <option value="storyteller">说书人 — 引人入胜、绘声绘色</option>
+        <option value="custom">自定义角色…</option>
+      </select>
+    </div>
+    <div class="form-group" id="customRoleGroup" style="display:none">
+      <label for="customRole">自定义写作角色</label>
+      <input type="text" id="customRole" placeholder="例如：幽默的朋友、资深编辑、哲学家…">
+      <div class="hint">描述你想要的写作风格或角色特点</div>
+    </div>
+    <div class="form-group">
       <label for="difficulty">语言难度</label>
       <select id="difficulty">
         <option value="beginner">初级 — 基础词汇、简单句式</option>
@@ -1445,6 +1461,14 @@ const STYLES = {
   }
 };
 
+const WRITER_ROLES = {
+  writer: '你是一位才华横溢的作家，文笔优美，善于用生动的语言和细腻的描写打动读者。',
+  journalist: '你是一位资深记者，写作风格客观中立，注重事实和信息的准确传达。',
+  teacher: '你是一位经验丰富的老师，善于用清晰易懂的语言讲解知识，循循善诱。',
+  poet: '你是一位浪漫的诗人，文字唯美，意境深远，善于用诗意的语言表达情感。',
+  storyteller: '你是一位引人入胜的说书人，善于营造悬念，让读者欲罢不能。'
+};
+
 const DIFFICULTY_MAP = {
   beginner: '初级（使用基础词汇和简单句式，句子以简单句为主，避免复杂从句）',
   intermediate: '中级（使用常用词汇和复合句式，可适当使用定语从句、状语从句等）',
@@ -1458,7 +1482,9 @@ const DEFAULT_SETTINGS = {
   difficulty: 'intermediate',
   theme: 'classic',
   randomCount: 10,
-  wordCount: 100
+  wordCount: 100,
+  writerRole: 'writer',
+  customRole: ''
 };
 
 // ============================================================
@@ -1674,7 +1700,16 @@ async function generateReviewText(wordsToReview, styleId) {
   const difficultyDesc = DIFFICULTY_MAP[settings.difficulty] || DIFFICULTY_MAP.intermediate;
   const wordCount = settings.wordCount || 100;
 
-  const systemPrompt = `你是一个才华横溢的作家，请严格遵循以下要求生成内容：
+  // Get writer role description
+  const roleKey = settings.writerRole || 'writer';
+  let roleDesc;
+  if (roleKey === 'custom' && settings.customRole) {
+    roleDesc = `你是${settings.customRole}。`;
+  } else {
+    roleDesc = WRITER_ROLES[roleKey] || WRITER_ROLES.writer;
+  }
+
+  const systemPrompt = `${roleDesc}请严格遵循以下要求生成内容：
 
 ## 任务
 用提供的单词列表创作一篇英文短文。
@@ -2186,6 +2221,9 @@ const apiModelInput = document.getElementById('apiModel');
 const difficultySelect = document.getElementById('difficulty');
 const randomCountInput = document.getElementById('randomCount');
 const wordCountInput = document.getElementById('wordCount');
+const writerRoleSelect = document.getElementById('writerRole');
+const customRoleInput = document.getElementById('customRole');
+const customRoleGroup = document.getElementById('customRoleGroup');
 
 function openSettings() {
   apiEndpointInput.value = settings.apiEndpoint || '';
@@ -2194,6 +2232,11 @@ function openSettings() {
   difficultySelect.value = settings.difficulty || 'intermediate';
   randomCountInput.value = settings.randomCount || 10;
   wordCountInput.value = settings.wordCount || 100;
+  writerRoleSelect.value = settings.writerRole || 'writer';
+  customRoleInput.value = settings.customRole || '';
+
+  // Show/hide custom role input based on selection
+  customRoleGroup.style.display = writerRoleSelect.value === 'custom' ? '' : 'none';
 
   // Update theme selector active state
   const selector = document.getElementById('themeSelector');
@@ -2215,6 +2258,8 @@ function saveSettingsHandler() {
   settings.difficulty = difficultySelect.value;
   settings.randomCount = parseInt(randomCountInput.value) || 10;
   settings.wordCount = parseInt(wordCountInput.value) || 100;
+  settings.writerRole = writerRoleSelect.value;
+  settings.customRole = customRoleInput.value.trim();
   // theme is already saved live on click, but keep this as fallback
   const activeTheme = document.querySelector('.theme-option.active');
   if (activeTheme) settings.theme = activeTheme.dataset.theme;
@@ -2232,6 +2277,11 @@ settingsModal.addEventListener('click', (e) => {
   if (e.target === settingsModal) closeSettings();
 });
 saveSettingsBtn.addEventListener('click', saveSettingsHandler);
+
+// Writer role toggle
+writerRoleSelect.addEventListener('change', () => {
+  customRoleGroup.style.display = writerRoleSelect.value === 'custom' ? '' : 'none';
+});
 
 exportBtn.addEventListener('click', () => {
   if (words.length === 0) {
