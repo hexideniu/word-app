@@ -1101,6 +1101,29 @@ header h1 {
 .confirm-ok.danger:hover { opacity: 0.9; }
 
 /* ========== Wordbook Search ========== */
+#wordbookModal .modal-sheet {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+#wordbookModal .modal-header {
+  flex-shrink: 0;
+}
+#wordbookModal .wb-search-box {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: var(--bg-modal);
+  padding: 2px 0 12px;
+  margin-bottom: 8px;
+  flex-shrink: 0;
+}
+#wordbookModal #wordbookList {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding-bottom: 8px;
+}
 .wb-search-box {
   margin-bottom: 14px;
 }
