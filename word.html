@@ -930,6 +930,7 @@ header h1 {
   gap: 12px;
   position: relative;
   transition: background 0.3s, box-shadow 0.2s;
+  cursor: pointer;
 }
 .wb-item:hover { box-shadow: var(--shadow-sm); }
 .wb-item-main { flex: 1; min-width: 0; }
@@ -1154,6 +1155,7 @@ header h1 {
   align-items: center;
   gap: 12px;
   transition: background 0.3s, box-shadow 0.2s;
+  cursor: pointer;
 }
 .due-item:hover { box-shadow: var(--shadow-sm); }
 .due-item-main { flex: 1; min-width: 0; }
@@ -1820,6 +1822,26 @@ function renderWordResult(data) {
   lucide.createIcons({ nodes: [wordResult] });
 }
 
+function openWordDetail(wordEntry) {
+  if (!wordEntry?.word) return;
+
+  closeDueWords();
+  closeWordbook();
+  closeSettings();
+
+  renderWordResult({
+    word: wordEntry.word,
+    phonetic: wordEntry.phonetic || '',
+    meanings: wordEntry.meanings || [],
+    examples: wordEntry.examples || []
+  });
+
+  searchInput.value = '';
+  setTimeout(() => {
+    wordCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 50);
+}
+
 function addWord(data) {
   if (words.some(w => w.word.toLowerCase() === data.word.toLowerCase())) {
     showToast('该单词已在单词本中');
@@ -2040,6 +2062,14 @@ function renderReviewText(text, reviewedWords) {
   }
 
   reviewContent.innerHTML = html;
+
+  reviewContent.querySelectorAll('.hl-word').forEach(el => {
+    el.addEventListener('click', () => {
+      const wordText = el.textContent.trim();
+      const wordEntry = words.find(w => w.word.toLowerCase() === wordText.toLowerCase());
+      if (wordEntry) openWordDetail(wordEntry);
+    });
+  });
 }
 
 // ============================================================
@@ -2132,11 +2162,21 @@ function renderDueWords() {
           </div>
           ${meaningText ? `<div class="due-item-meanings">${escapeHtml(meaningText)}</div>` : ''}
         </div>
-        <button class="due-reset-btn" title="标记不认识"><i data-lucide="rotate-ccw" class="icon-sm"></i> 不认识</button>
+        <button class="due-reset-btn" title="标记不认识"><i data-lucide="rotate-ccw" class="icon-sm"></i> </button>
         <button class="due-delete-btn" title="删除单词"><i data-lucide="trash-2" class="icon-sm"></i></button>
       </div>
     `;
   }).join('');
+
+  // Word detail handlers
+  dueWordsList.querySelectorAll('.due-item').forEach(item => {
+    item.addEventListener('click', (e) => {
+      if (e.target.closest('button')) return;
+      e.stopPropagation();
+      const w = words.find(w => w.id === item.dataset.id);
+      if (w) openWordDetail(w);
+    });
+  });
 
   // Pronunciation handlers
   dueWordsList.querySelectorAll('.due-pron-btn').forEach(btn => {
@@ -2440,6 +2480,16 @@ function renderWordbook(filter = '') {
       </div>
     `;
   }).join('') + '</div>';
+
+  // Attach word detail handlers
+  wordbookList.querySelectorAll('.wb-item').forEach(item => {
+    item.addEventListener('click', (e) => {
+      if (e.target.closest('button')) return;
+      e.stopPropagation();
+      const w = words.find(w => w.id === item.dataset.id);
+      if (w) openWordDetail(w);
+    });
+  });
 
   // Attach pronunciation handlers
   wordbookList.querySelectorAll('.wb-pron-btn').forEach(btn => {
