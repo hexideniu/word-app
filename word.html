@@ -12,6 +12,9 @@ html { font-size: 16px; -webkit-text-size-adjust: 100%; }
 
 /* ========== Theme Definitions ========== */
 :root, [data-theme="classic"] {
+  if (!settings.apiKey && !settings.apiEndpoint) {
+    throw new Error('请先在设置中配置 API');
+  }
   --bg: #f5f7fa;
   --bg-card: #fff;
   --bg-input: #fafbfc;
@@ -972,8 +975,14 @@ header h1 {
   font-weight: 500;
 }
 .wb-item-level.mastered { color: var(--success); background: var(--accent-soft); }
-.wb-delete-btn {
+.wb-item-actions,
+.due-item-actions {
   flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.wb-delete-btn {
   width: 36px;
   height: 36px;
   border: none;
@@ -1202,25 +1211,25 @@ header h1 {
   text-overflow: ellipsis;
 }
 .due-reset-btn {
-  flex-shrink: 0;
-  padding: 8px 14px;
+  width: 36px;
+  height: 36px;
   border: none;
   border-radius: 10px;
   background: var(--danger-bg);
   color: var(--danger);
-  font-size: 13px;
-  font-weight: 600;
+  font-size: 16px;
   cursor: pointer;
   transition: background 0.2s, transform 0.15s;
-  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.due-reset-btn:hover { background: var(--danger-hover); transform: scale(1.03); }
+.due-reset-btn:hover { background: var(--danger-hover); transform: scale(1.05); }
 .due-item-reset {
   opacity: 0.5;
   pointer-events: none;
 }
 .due-delete-btn {
-  flex-shrink: 0;
   width: 36px;
   height: 36px;
   border: none;
@@ -1673,6 +1682,18 @@ async function apiChat(messages, temperature = 0.3) {
 
 async function lookupWord(word) {
   const cacheKey = word.toLowerCase().trim();
+  const localWord = words.find(w => w.word && w.word.toLowerCase() === cacheKey);
+  if (localWord) return localWord;
+
+  try {
+    const storedCache = JSON.parse(localStorage.getItem('wordApp_lookupCache') || '{}');
+    const cachedWord = storedCache[cacheKey];
+    if (cachedWord && Date.now() - (cachedWord._cachedAt || 0) < 7 * 24 * 60 * 60 * 1000) {
+      lookupCache[cacheKey] = cachedWord;
+      return cachedWord;
+    }
+  } catch {}
+
   if (lookupCache[cacheKey]) return lookupCache[cacheKey];
 
   const systemPrompt = `你是英语词典专家。请查询单词并提供以下信息，返回纯 JSON（不要 markdown 代码块标记）：
@@ -1774,11 +1795,6 @@ async function handleSearch() {
     return;
   }
   if (isSearching) return;
-
-  if (!settings.apiKey && !settings.apiEndpoint) {
-    showToast('请先在设置中配置 API');
-    return;
-  }
 
   isSearching = true;
   searchBtn.disabled = true;
@@ -2185,8 +2201,10 @@ function renderDueWords() {
           </div>
           ${meaningText ? `<div class="due-item-meanings">${escapeHtml(meaningText)}</div>` : ''}
         </div>
-        <button class="due-reset-btn" title="标记不认识"><i data-lucide="rotate-ccw" class="icon-sm"></i> </button>
-        <button class="due-delete-btn" title="删除单词"><i data-lucide="trash-2" class="icon-sm"></i></button>
+        <div class="due-item-actions">
+          <button class="due-reset-btn" title="标记不认识"><i data-lucide="rotate-ccw" class="icon-sm"></i></button>
+          <button class="due-delete-btn" title="删除单词"><i data-lucide="trash-2" class="icon-sm"></i></button>
+        </div>
       </div>
     `;
   }).join('');
@@ -2224,8 +2242,10 @@ function renderDueWords() {
       saveWords();
       updateDueCount();
       item.classList.add('due-item-reset');
-      btn.textContent = '已重置';
+      btn.innerHTML = '<i data-lucide="check" class="icon-sm"></i>';
+      btn.title = '已重置';
       btn.disabled = true;
+      lucide.createIcons({ nodes: [btn] });
       showToast(`「${word.word}」已重置，稍后重新复习`);
     });
   });
@@ -2498,8 +2518,10 @@ function renderWordbook(filter = '') {
             <span class="wb-item-level ${levelInfo.cls}">${levelInfo.text}</span>
           </div>
         </div>
-        <button class="wb-reset-btn" title="重置复习"><i data-lucide="rotate-ccw" class="icon-sm"></i></button>
-        <button class="wb-delete-btn" title="删除单词"><i data-lucide="trash-2" class="icon-sm"></i></button>
+        <div class="wb-item-actions">
+          <button class="wb-reset-btn" title="重置复习"><i data-lucide="rotate-ccw" class="icon-sm"></i></button>
+          <button class="wb-delete-btn" title="删除单词"><i data-lucide="trash-2" class="icon-sm"></i></button>
+        </div>
       </div>
     `;
   }).join('') + '</div>';
