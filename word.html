@@ -2,7 +2,7 @@
 <html lang="zh-CN" data-theme="classic">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>单词本</title>
 <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 <style>
@@ -12,9 +12,6 @@ html { font-size: 16px; -webkit-text-size-adjust: 100%; }
 
 /* ========== Theme Definitions ========== */
 :root, [data-theme="classic"] {
-  if (!settings.apiKey && !settings.apiEndpoint) {
-    throw new Error('请先在设置中配置 API');
-  }
   --bg: #f5f7fa;
   --bg-card: #fff;
   --bg-input: #fafbfc;
@@ -369,6 +366,23 @@ header h1 {
   box-shadow: 0 0 0 3px var(--accent-soft);
 }
 .search-box input::placeholder { color: var(--text-hint); }
+.search-box .clear-search-btn {
+  width: 42px;
+  margin-left: -52px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--text-muted);
+  box-shadow: none;
+  z-index: 1;
+}
+.search-box .clear-search-btn:hover {
+  color: var(--accent);
+  background: transparent;
+  box-shadow: none;
+  transform: none;
+}
+.search-box .clear-search-btn[hidden] { display: none; }
 .search-box button {
   padding: 14px 22px;
   background: var(--gradient-accent);
@@ -827,6 +841,31 @@ header h1 {
   background: var(--bg-card);
   box-shadow: 0 0 0 3px var(--accent-soft);
 }
+.form-group .input-with-action {
+  position: relative;
+}
+.form-group .input-with-action input { padding-right: 48px; }
+.input-action-btn {
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transform: translateY(-50%);
+}
+.input-action-btn:hover,
+.input-action-btn:focus-visible {
+  color: var(--accent);
+  background: var(--accent-soft);
+  outline: none;
+}
 .form-group .hint {
   font-size: 12px;
   color: var(--text-hint);
@@ -1270,6 +1309,7 @@ header h1 {
   <section class="search-section">
     <div class="search-box">
       <input type="text" id="searchInput" placeholder="输入英文单词…" autocomplete="off" autocapitalize="none" spellcheck="false">
+      <button type="button" class="clear-search-btn" id="clearSearchBtn" aria-label="清空输入" title="清空输入" hidden><i data-lucide="x" class="icon-btn"></i></button>
       <button id="searchBtn">查词</button>
     </div>
   </section>
@@ -1371,7 +1411,10 @@ header h1 {
     </div>
     <div class="form-group">
       <label for="apiKey">API Key</label>
-      <input type="password" id="apiKey" placeholder="sk-...">
+      <div class="input-with-action">
+        <input type="password" id="apiKey" placeholder="sk-...">
+        <button type="button" class="input-action-btn" id="toggleApiKeyBtn" aria-label="显示 API Key" title="显示 API Key"><i data-lucide="eye" class="icon-sm"></i></button>
+      </div>
     </div>
     <div class="form-group">
       <label for="apiModel">模型</label>
@@ -1783,6 +1826,7 @@ async function generateReviewText(wordsToReview, styleId) {
 // ============================================================
 const searchInput = document.getElementById('searchInput');
 const searchBtn = document.getElementById('searchBtn');
+const clearSearchBtn = document.getElementById('clearSearchBtn');
 const wordCard = document.getElementById('wordCard');
 const wordResult = document.getElementById('wordResult');
 
@@ -1811,7 +1855,6 @@ async function handleSearch() {
     isSearching = false;
     searchBtn.disabled = false;
     searchBtn.textContent = '查词';
-    searchInput.value = '';
   }
 }
 
@@ -2300,6 +2343,7 @@ const exportBtn = document.getElementById('exportBtn');
 
 const apiEndpointInput = document.getElementById('apiEndpoint');
 const apiKeyInput = document.getElementById('apiKey');
+const toggleApiKeyBtn = document.getElementById('toggleApiKeyBtn');
 const apiModelInput = document.getElementById('apiModel');
 const difficultySelect = document.getElementById('difficulty');
 const randomCountInput = document.getElementById('randomCount');
@@ -2360,6 +2404,15 @@ settingsModal.addEventListener('click', (e) => {
   if (e.target === settingsModal) closeSettings();
 });
 saveSettingsBtn.addEventListener('click', saveSettingsHandler);
+
+toggleApiKeyBtn.addEventListener('click', () => {
+  const isHidden = apiKeyInput.type === 'password';
+  apiKeyInput.type = isHidden ? 'text' : 'password';
+  toggleApiKeyBtn.setAttribute('aria-label', isHidden ? '隐藏 API Key' : '显示 API Key');
+  toggleApiKeyBtn.setAttribute('title', isHidden ? '隐藏 API Key' : '显示 API Key');
+  toggleApiKeyBtn.innerHTML = `<i data-lucide="${isHidden ? 'eye-off' : 'eye'}" class="icon-sm"></i>`;
+  lucide.createIcons({ nodes: [toggleApiKeyBtn] });
+});
 
 // Writer role toggle
 writerRoleSelect.addEventListener('change', () => {
@@ -2796,6 +2849,14 @@ function speakWord(word) {
 // ============================================================
 searchInput.addEventListener('keydown', (e) => {
   if (e.key === 'Enter') handleSearch();
+});
+searchInput.addEventListener('input', () => {
+  clearSearchBtn.hidden = searchInput.value.length === 0;
+});
+clearSearchBtn.addEventListener('click', () => {
+  searchInput.value = '';
+  clearSearchBtn.hidden = true;
+  searchInput.focus();
 });
 
 // ============================================================
