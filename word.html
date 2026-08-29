@@ -344,6 +344,50 @@ header h1 {
   background: var(--bg-badge);
 }
 
+/* ========== Today Dashboard ========== */
+.today-section {
+  background: var(--gradient-header);
+  color: #fff;
+  border-radius: 22px;
+  padding: 22px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow-lg);
+}
+.today-kicker { font-size: 13px; opacity: .82; margin-bottom: 4px; }
+.today-section h2 { font-size: 24px; margin-bottom: 18px; letter-spacing: .2px; }
+.today-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 18px; }
+.today-stat { background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.18); border-radius: 14px; padding: 12px; }
+.today-stat strong { display: block; font-size: 24px; line-height: 1.1; }
+.today-stat span { display: block; font-size: 12px; opacity: .82; margin-top: 4px; }
+.today-actions { display: flex; gap: 10px; }
+.today-primary, .today-secondary { border: none; border-radius: 12px; padding: 12px 16px; font-size: 14px; font-weight: 700; cursor: pointer; transition: transform .15s, opacity .2s; }
+.today-primary { background: #fff; color: var(--accent); flex: 1; }
+.today-secondary { background: rgba(255,255,255,.14); color: #fff; border: 1px solid rgba(255,255,255,.3); }
+.today-primary:hover, .today-secondary:hover { transform: translateY(-1px); }
+.today-primary:disabled { opacity: .65; cursor: not-allowed; transform: none; }
+
+/* ========== Active Recall Panel ========== */
+.quiz-panel { background: var(--bg-card); border-radius: 18px; padding: 22px; margin-bottom: 16px; box-shadow: var(--shadow-md); display: none; }
+.quiz-panel.visible { display: block; animation: fadeInUp .3s ease; }
+.quiz-meta { display: flex; justify-content: space-between; color: var(--text-muted); font-size: 12px; margin-bottom: 16px; }
+.quiz-word { font-size: 32px; font-weight: 800; color: var(--text-primary); letter-spacing: .3px; margin-bottom: 6px; }
+.quiz-phonetic { color: var(--text-muted); font-style: italic; font-size: 15px; }
+.quiz-prompt { color: var(--text-secondary); font-size: 14px; margin: 18px 0 12px; }
+.quiz-answer { background: var(--accent-soft); border-radius: 14px; padding: 14px; color: var(--text-body); line-height: 1.7; margin-bottom: 14px; }
+.quiz-answer .quiz-example { margin-top: 8px; color: var(--text-muted); font-size: 13px; }
+.quiz-reveal-btn { width: 100%; padding: 12px; border: 2px solid var(--border); border-radius: 12px; color: var(--accent); background: var(--bg-item); font-weight: 700; cursor: pointer; }
+.quiz-reveal-btn:hover { border-color: var(--accent); background: var(--accent-soft); }
+.quiz-ratings { display: none; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.quiz-ratings.visible { display: grid; }
+.quiz-rating { border: none; border-radius: 11px; padding: 11px 6px; font-size: 12px; font-weight: 700; cursor: pointer; }
+.quiz-rating small { display: block; font-size: 10px; font-weight: 500; opacity: .8; margin-top: 3px; }
+.quiz-rating.again { background: var(--danger-bg); color: var(--danger); }
+.quiz-rating.hard { background: #fff3d6; color: #b7791f; }
+.quiz-rating.good { background: var(--accent-soft); color: var(--accent); }
+.quiz-rating.easy { background: #e4f7ea; color: var(--success); }
+.quiz-complete { text-align: center; padding: 18px 0 4px; color: var(--text-secondary); }
+@media (max-width: 420px) { .today-stats { gap: 7px; } .today-stat { padding: 10px 8px; } .today-stat strong { font-size: 21px; } .today-actions { flex-direction: column; } .today-secondary { width: 100%; } }
+
 /* ========== Search Section ========== */
 .search-section { margin-bottom: 20px; }
 .search-box {
@@ -1292,56 +1336,134 @@ header h1 {
 
 /* ========== Selection ========== */
 ::selection { background: var(--accent-soft); color: var(--accent); }
+/* ========== Redesigned Product UI ========== */
+:root { --bg: #f5f7fb; --bg-card: #ffffff; --text-primary: #172033; --text-body: #475467; --text-secondary: #667085; --text-muted: #98a2b3; --accent: #635bff; --accent-soft: #eeedff; --border: #e6e8ef; --border-light: #eef0f5; --shadow-md: 0 12px 30px rgba(38,45,73,.07); --shadow-lg: 0 20px 45px rgba(38,45,73,.12); --gradient-header: linear-gradient(135deg,#635bff 0%,#8b5cf6 100%); --gradient-accent: linear-gradient(135deg,#635bff 0%,#8b5cf6 100%); }
+body { background: #f5f7fb; }
+#app.app-shell { max-width: none; margin: 0; padding: 0; min-height: 100vh; display: grid; grid-template-columns: 236px minmax(0,1fr); }
+.app-sidebar { background: #fff; border-right: 1px solid #eaecf2; padding: 28px 16px 20px; display: flex; flex-direction: column; min-height: 100vh; }
+.brand-lockup { display:flex; align-items:center; gap:10px; padding: 0 12px 32px; }
+.brand-mark { width:34px; height:34px; border-radius:11px; display:grid; place-items:center; color:#fff; font-weight:800; background:var(--gradient-accent); box-shadow:0 8px 16px rgba(99,91,255,.24); }
+.brand-lockup strong { display:block; color:var(--text-primary); font-size:15px; letter-spacing:.2px; }
+.brand-lockup span { display:block; color:var(--text-muted); font-size:10px; margin-top:1px; }
+.main-nav { display:flex; flex-direction:column; gap:5px; }
+.nav-item { width:100%; border:0; background:transparent; color:#7b8495; border-radius:11px; padding:11px 12px; display:flex; align-items:center; gap:11px; text-align:left; font-size:14px; font-weight:600; cursor:pointer; transition:background .2s,color .2s,transform .15s; }
+.nav-item:hover { background:#f5f4ff; color:var(--accent); }
+.nav-item.active { background:var(--accent-soft); color:var(--accent); }
+.nav-item b { margin-left:auto; min-width:22px; padding:2px 6px; border-radius:9px; background:#fff; color:var(--accent); font-size:11px; text-align:center; }
+.sidebar-bottom { margin-top:auto; }
+.sidebar-tip { display:flex; gap:8px; align-items:flex-start; background:#f8f8ff; color:#858bb0; padding:12px; border-radius:12px; font-size:11px; line-height:1.45; margin-top:15px; }
+.app-main { min-width:0; padding: 0 42px 50px; max-width: 1320px; width:100%; margin:0 auto; }
+.topbar { height: 112px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid #eaecf2; margin-bottom:27px; position:relative; background:transparent; backdrop-filter:none; }
+.topbar .eyebrow, .section-kicker { display:block; color:#a1a8b8; font-size:10px; font-weight:800; letter-spacing:1.4px; margin-bottom:5px; }
+.topbar h1 { font-size:26px; line-height:1.2; color:var(--text-primary); background:none; -webkit-text-fill-color:initial; letter-spacing:-.4px; }
+.topbar-date { font-size:12px; color:#98a2b3; background:#fff; border:1px solid #eaecf2; padding:8px 12px; border-radius:10px; }
+.today-hero { min-height:248px; border-radius:24px; padding:30px 34px; margin-bottom:22px; display:flex; align-items:center; justify-content:space-between; color:#fff; background:linear-gradient(120deg,#5551dd 0%,#7b4fd3 54%,#9a68d7 100%); box-shadow:0 18px 32px rgba(93,81,215,.2); overflow:hidden; position:relative; }
+.today-hero::after { content:""; position:absolute; width:320px; height:320px; border:1px solid rgba(255,255,255,.15); border-radius:50%; right:-100px; top:-110px; box-shadow:0 0 0 26px rgba(255,255,255,.04),0 0 0 54px rgba(255,255,255,.03); }
+.hero-copy { position:relative; z-index:1; }
+.today-hero .today-kicker { font-size:12px; opacity:.74; margin-bottom:9px; }
+.today-hero h2 { font-size:30px; letter-spacing:-.6px; margin-bottom:6px; }
+.today-hero p { color:rgba(255,255,255,.73); font-size:13px; margin-bottom:22px; }
+.today-hero .today-actions { display:flex; gap:9px; }
+.today-hero .today-primary, .today-hero .today-secondary { min-height:42px; border-radius:11px; padding:0 17px; font-size:13px; }
+.today-hero .today-primary { color:#5149d6; box-shadow:0 8px 14px rgba(34,27,129,.18); }
+.today-hero .today-secondary { border:1px solid rgba(255,255,255,.3); background:rgba(255,255,255,.13); }
+.hero-progress { position:relative; z-index:1; width:190px; margin-right:10px; }
+.progress-ring { width:142px; height:142px; border-radius:50%; margin:0 auto 12px; display:grid; place-items:center; background:conic-gradient(#fff 0deg,rgba(255,255,255,.23) 0deg); position:relative; }
+.progress-ring::before { content:""; position:absolute; inset:8px; border-radius:50%; background:#6759d6; }
+.progress-ring > div { position:relative; text-align:center; z-index:1; }
+.progress-ring strong { display:block; font-size:34px; line-height:1; }
+.progress-ring span { display:block; color:rgba(255,255,255,.75); font-size:11px; margin-top:5px; }
+.progress-caption { display:flex; justify-content:center; gap:14px; color:rgba(255,255,255,.7); font-size:11px; }
+.progress-caption b { color:#fff; }
+.workspace-grid { display:grid; grid-template-columns:minmax(0,1.55fr) minmax(280px,.85fr); gap:22px; align-items:start; }
+.primary-column, .secondary-column { min-width:0; display:flex; flex-direction:column; gap:22px; }
+.panel { background:#fff; border:1px solid #eaecf2; border-radius:18px; padding:22px; box-shadow:0 6px 18px rgba(38,45,73,.035); }
+.section-heading { display:flex; justify-content:space-between; align-items:flex-start; gap:12px; margin-bottom:17px; }
+.section-heading h2 { color:var(--text-primary); font-size:19px; letter-spacing:-.2px; }
+.section-note { color:#98a2b3; font-size:11px; padding-top:17px; }
+.section-icon { color:#a6aebe; width:19px; height:19px; }
+.review-section, .context-panel { margin-top:0; }
+.review-section .due-count { color:#858da0; font-size:12px; }
+.quiz-panel { border:1px solid #ececff; border-radius:15px; box-shadow:none; padding:24px; margin:0; background:linear-gradient(180deg,#fbfbff 0%,#fff 100%); }
+.quiz-word { font-size:36px; letter-spacing:-.8px; }
+.quiz-prompt { margin:20px 0 13px; color:#7d8798; }
+.quiz-reveal-btn { background:#fff; border-color:#dcdcff; }
+.quiz-ratings { gap:9px; }
+.quiz-rating { padding:12px 5px; }
+.empty-focus { display:flex; flex-direction:column; align-items:center; gap:5px; padding:28px 10px 11px; color:#98a2b3; text-align:center; }
+.empty-focus .icon { color:#a7a1ff; width:25px; height:25px; margin-bottom:3px; }
+.empty-focus strong { color:#687386; font-size:14px; }
+.empty-focus span { font-size:12px; }
+.quiz-panel.visible ~ .empty-focus { display:none; }
+.style-buttons { margin:0 0 15px; gap:8px; }
+.style-btn { padding:9px 11px; border-radius:10px; background:#fff; border-color:#e4e6ed; font-size:12px; }
+.style-btn.active { background:var(--accent-soft); }
+.review-text-card { border:1px solid #eceef3; box-shadow:none; border-radius:14px; padding:20px; }
+.review-actions { margin-top:12px; }
+.btn-save-article, .btn-copy-article { border-radius:10px !important; padding:10px 8px !important; font-size:12px !important; }
+.quick-search-panel p { color:#98a2b3; font-size:12px; line-height:1.55; margin:-6px 0 15px; }
+.quick-search-panel .search-box { gap:7px; }
+.quick-search-panel .search-box input { border-radius:10px; background:#fafbfe; padding:11px 13px; border-width:1px; font-size:13px; }
+.quick-search-panel .search-box > button:last-child { width:40px; padding:0; border-radius:10px; display:grid; place-items:center; }
+.word-card { border:1px solid #eaecf2; border-radius:16px; box-shadow:0 6px 18px rgba(38,45,73,.04); padding:18px; margin:0; }
+.suggestion-panel { display:flex; gap:12px; align-items:flex-start; background:#fbfbff; border-color:#e9e7ff; }
+.suggestion-icon { width:31px; height:31px; display:grid; place-items:center; color:var(--accent); background:var(--accent-soft); border-radius:10px; flex:0 0 auto; }
+.suggestion-panel h3 { color:var(--text-primary); font-size:13px; margin-bottom:4px; }
+.suggestion-panel p { color:#8b93a3; font-size:11px; line-height:1.55; }
+@media (max-width: 900px) { #app.app-shell { display:block; } .app-sidebar { min-height:auto; height:64px; position:fixed; bottom:0; left:0; right:0; z-index:50; border-right:0; border-top:1px solid #eaecf2; padding:7px 12px; flex-direction:row; align-items:center; } .brand-lockup, .sidebar-tip { display:none; } .main-nav { flex:1; flex-direction:row; justify-content:space-around; gap:4px; } .main-nav .nav-item, .sidebar-bottom .nav-item { flex-direction:column; justify-content:center; gap:2px; padding:5px; font-size:10px; text-align:center; } .nav-item b { position:absolute; margin:-23px 0 0 22px; min-width:16px; padding:1px 4px; font-size:9px; } .sidebar-bottom { margin:0; } .app-main { padding:0 18px 88px; } .topbar { height:92px; margin-bottom:18px; } .topbar h1 { font-size:22px; } .workspace-grid { grid-template-columns:1fr; } .today-hero { padding:23px; min-height:225px; } .today-hero h2 { font-size:25px; } .hero-progress { width:142px; margin-right:0; } .progress-ring { width:112px; height:112px; } .progress-ring::before { inset:7px; } .progress-ring strong { font-size:28px; } }
+@media (max-width: 520px) { .topbar-date { display:none; } .today-hero { display:block; } .hero-progress { margin:20px auto 0; } .today-hero::after { right:-160px; } .today-hero .today-actions { flex-direction:row; } .today-hero .today-primary, .today-hero .today-secondary { flex:1; padding:0 9px; } .panel { padding:17px; } .quiz-panel { padding:19px; } .quiz-word { font-size:32px; } }
 </style>
 </head>
 <body>
 
-<div id="app">
-  <!-- Header -->
-  <header>
-    <h1>单词本</h1>
-    <div class="header-right">
-      <button class="settings-btn" id="settingsBtn" aria-label="设置"><i data-lucide="settings" class="icon-btn"></i></button>
-    </div>
-  </header>
+<div id="app" class="app-shell">
+  <aside class="app-sidebar">
+    <div class="brand-lockup"><div class="brand-mark">词</div><div><strong>词汇教练</strong><span>Vocabulary coach</span></div></div>
+    <nav class="main-nav" aria-label="主导航">
+      <button class="nav-item active" id="navToday"><i data-lucide="sun" class="icon-inline"></i><span>今日</span></button>
+      <button class="nav-item" id="navLibrary"><i data-lucide="library" class="icon-inline"></i><span>词库</span><b id="navDueBadge">0</b></button>
+      <button class="nav-item" id="navNotebook"><i data-lucide="notebook-tabs" class="icon-inline"></i><span>内容库</span></button>
+    </nav>
+    <div class="sidebar-bottom"><button class="nav-item" id="settingsBtn" aria-label="设置"><i data-lucide="settings" class="icon-inline"></i><span>设置</span></button><div class="sidebar-tip"><i data-lucide="lightbulb" class="icon-sm"></i><span>每天 10 分钟，记得更牢。</span></div></div>
+  </aside>
 
-  <!-- Search Section -->
-  <section class="search-section">
-    <div class="search-box">
-      <input type="text" id="searchInput" placeholder="输入英文单词…" autocomplete="off" autocapitalize="none" spellcheck="false">
-      <button type="button" class="clear-search-btn" id="clearSearchBtn" aria-label="清空输入" title="清空输入" hidden><i data-lucide="x" class="icon-btn"></i></button>
-      <button id="searchBtn">查词</button>
-    </div>
-  </section>
+  <main class="app-main">
+    <header class="topbar"><div><span class="eyebrow">TODAY'S PLAN</span><h1>今天，学一点新的。</h1></div><div class="topbar-date" id="todayDate"></div></header>
 
-  <!-- Word Result -->
-  <div class="word-card" id="wordCard">
-    <div id="wordResult"></div>
-  </div>
+    <section class="today-hero" id="todaySection">
+      <div class="hero-copy"><div class="today-kicker">你的记忆正在变得更稳</div><h2>准备好开始了吗？</h2><p>先主动回忆，再用真实语境把单词放回脑海。</p><div class="today-actions"><button class="today-primary" id="startReviewBtn">开始今日复习</button><button class="today-secondary" id="quickAddBtn"><i data-lucide="plus" class="icon-inline"></i>添加单词</button></div></div>
+      <div class="hero-progress"><div class="progress-ring"><div><strong id="todayDueStat">0</strong><span>待复习</span></div></div><div class="progress-caption"><span><b id="todayMasteredStat">0</b> 词已掌握</span><span>共 <b id="todayTotalStat">0</b> 词</span></div></div>
+    </section>
 
-  <!-- Review Section -->
-  <section class="review-section">
-    <div class="review-header">
-      <h2>复习文章</h2>
-      <span class="due-count" id="dueCount">计算中…</span>
-    </div>
-    <div class="style-buttons" id="styleButtons">
-      <button class="style-btn" data-style="auto"><i data-lucide="sparkles" class="icon-inline"></i>自动选择</button>
-      <button class="style-btn" data-style="story"><i data-lucide="book-heart" class="icon-inline"></i>离奇故事</button>
-      <button class="style-btn" data-style="dialogue"><i data-lucide="message-circle" class="icon-inline"></i>有趣对话</button>
-      <button class="style-btn" data-style="news"><i data-lucide="newspaper" class="icon-inline"></i>新闻资讯</button>
-    </div>
-    <div class="review-body">
-      <div class="article-nums" id="articleNums"></div>
-      <div class="review-text-card" id="reviewCard" style="flex:1;min-width:0">
-        <div id="reviewContent"></div>
+    <section class="workspace-grid">
+      <div class="primary-column">
+        <section class="panel review-section">
+          <div class="section-heading"><div><span class="section-kicker">FOCUS</span><h2>主动回忆</h2></div><span class="due-count" id="dueCount">计算中…</span></div>
+          <div class="quiz-panel" id="quizPanel">
+            <div class="quiz-meta"><span id="quizProgress">第 1 / 1 词</span><span>先回忆，再看答案</span></div>
+            <div class="quiz-word" id="quizWord"></div><div class="quiz-phonetic" id="quizPhonetic"></div>
+            <div class="quiz-prompt">你能想起它的中文含义和用法吗？</div>
+            <button class="quiz-reveal-btn" id="quizRevealBtn">显示答案</button><div class="quiz-answer" id="quizAnswer" hidden></div>
+            <div class="quiz-ratings" id="quizRatings"><button class="quiz-rating again" data-rating="again">忘记了<small>10 分钟后</small></button><button class="quiz-rating hard" data-rating="hard">很困难<small>明天</small></button><button class="quiz-rating good" data-rating="good">想起来了<small>3 天后</small></button><button class="quiz-rating easy" data-rating="easy">很简单<small>14 天后</small></button></div>
+          </div>
+          <div class="empty-focus" id="focusEmpty"><i data-lucide="check-circle-2" class="icon"></i><strong>今天没有到期单词</strong><span>去添加一个新词，开启下一轮记忆。</span></div>
+        </section>
+
+        <section class="panel context-panel">
+          <div class="section-heading"><div><span class="section-kicker">CONTEXT LAB</span><h2>语境强化</h2></div><span class="section-note">用刚复习的词生成内容</span></div>
+          <div class="style-buttons" id="styleButtons"><button class="style-btn" data-style="auto"><i data-lucide="sparkles" class="icon-inline"></i>自动选择</button><button class="style-btn" data-style="story"><i data-lucide="book-heart" class="icon-inline"></i>离奇故事</button><button class="style-btn" data-style="dialogue"><i data-lucide="message-circle" class="icon-inline"></i>有趣对话</button><button class="style-btn" data-style="news"><i data-lucide="newspaper" class="icon-inline"></i>新闻资讯</button></div>
+          <div class="review-body"><div class="article-nums" id="articleNums"></div><div class="review-text-card" id="reviewCard"><div id="reviewContent"></div></div></div>
+          <div class="review-actions" id="reviewActions"><button class="btn-save-article" id="saveArticleBtn"><i data-lucide="bookmark" class="icon-inline"></i>保存到内容库</button><button class="btn-copy-article" id="copyArticleBtn"><i data-lucide="clipboard-copy" class="icon-inline"></i>复制</button></div>
+        </section>
       </div>
-    </div>
-    <div class="review-actions" id="reviewActions">
-      <button class="btn-save-article" id="saveArticleBtn"><i data-lucide="download" class="icon-inline"></i>保存</button>
-      <button class="btn-copy-article" id="copyArticleBtn"><i data-lucide="clipboard-copy" class="icon-inline"></i>复制</button>
-    </div>
-  </section>
+
+      <aside class="secondary-column">
+        <section class="panel quick-search-panel"><div class="section-heading"><div><span class="section-kicker">QUICK LOOKUP</span><h2>遇到新词？</h2></div><i data-lucide="search" class="section-icon"></i></div><p>输入一个单词，AI 会帮你整理释义、例句和发音。</p><div class="search-box"><input type="text" id="searchInput" placeholder="例如：serendipity" autocomplete="off" autocapitalize="none" spellcheck="false"><button type="button" class="clear-search-btn" id="clearSearchBtn" aria-label="清空输入" title="清空输入" hidden><i data-lucide="x" class="icon-btn"></i></button><button id="searchBtn"><i data-lucide="arrow-up-right" class="icon-inline"></i></button></div></section>
+        <div class="word-card" id="wordCard"><div id="wordResult"></div></div>
+        <section class="panel suggestion-panel"><div class="suggestion-icon"><i data-lucide="sparkles" class="icon"></i></div><div><h3>一个小建议</h3><p>把今天最难的词标记为“忘记了”，系统会在 10 分钟后提醒你再次回忆。</p></div></section>
+      </aside>
+    </section>
+  </main>
 </div>
 
 <!-- Settings Modal -->
@@ -1517,7 +1639,13 @@ header h1 {
 // ============================================================
 //  Constants
 // ============================================================
-const MAX_REVIEW_LEVEL = 7; // Total times to review each word
+const MAX_REVIEW_LEVEL = 7; // Kept for backwards compatibility with older saved data
+const REVIEW_INTERVALS = {
+  again: 10 * 60 * 1000,
+  hard: 24 * 60 * 60 * 1000,
+  good: 3 * 24 * 60 * 60 * 1000,
+  easy: 14 * 24 * 60 * 60 * 1000
+};
 
 const STYLES = {
   auto: {
@@ -1606,6 +1734,17 @@ function loadData() {
       });
     }
   } catch {}
+
+  // Migrate older entries to the time-based review model.
+  const now = new Date().toISOString();
+  let migrated = false;
+  words.forEach(w => {
+    if (!w.dueAt) { w.dueAt = now; migrated = true; }
+    if (typeof w.repetitions !== 'number') { w.repetitions = w.level || 0; migrated = true; }
+    if (typeof w.lapses !== 'number') { w.lapses = 0; migrated = true; }
+    if (typeof w.difficulty !== 'number') { w.difficulty = 5; migrated = true; }
+  });
+  if (migrated) saveWords();
 }
 
 function saveWords() {
@@ -1654,17 +1793,20 @@ function initThemeSelector() {
 //  Review Management
 // ============================================================
 function getDueWords() {
-  // Return all words that haven't reached max review level
-  return words.filter(w => w.level < MAX_REVIEW_LEVEL);
+  const now = Date.now();
+  return words.filter(w => (w.level || 0) < MAX_REVIEW_LEVEL && (!w.dueAt || new Date(w.dueAt).getTime() <= now));
 }
 
 function getRandomWordsForReview() {
-  // Generate random words when style button is clicked
-  const availableWords = words.filter(w => w.level < MAX_REVIEW_LEVEL);
+  // Prefer the words that have been waiting longest, then fill randomly.
+  const availableWords = getDueWords().sort((a, b) => {
+    const ad = new Date(a.dueAt || 0).getTime();
+    const bd = new Date(b.dueAt || 0).getTime();
+    return ad - bd;
+  });
   if (availableWords.length === 0) return [];
   const count = Math.min(settings.randomCount || 10, availableWords.length);
-  const shuffled = [...availableWords].sort(() => Math.random() - 0.5);
-  return shuffled.slice(0, count);
+  return availableWords.slice(0, count);
 }
 
 function advanceWordReview(word) {
@@ -1672,6 +1814,20 @@ function advanceWordReview(word) {
     word.level += 1;
   }
   word.lastReviewedAt = new Date().toISOString();
+}
+
+function scheduleWordReview(word, rating) {
+  const now = Date.now();
+  const interval = REVIEW_INTERVALS[rating] || REVIEW_INTERVALS.good;
+  word.dueAt = new Date(now + interval).toISOString();
+  word.lastReviewedAt = new Date(now).toISOString();
+  word.repetitions = (word.repetitions || 0) + 1;
+  if (rating === 'again') {
+    word.lapses = (word.lapses || 0) + 1;
+    word.level = 0;
+  } else {
+    word.level = Math.min(MAX_REVIEW_LEVEL, (word.level || 0) + (rating === 'easy' ? 2 : 1));
+  }
 }
 
 // ============================================================
@@ -1969,6 +2125,24 @@ const reviewActions = document.getElementById('reviewActions');
 const articleNums = document.getElementById('articleNums');
 const saveArticleBtn = document.getElementById('saveArticleBtn');
 const copyArticleBtn = document.getElementById('copyArticleBtn');
+const todayDueStat = document.getElementById('todayDueStat');
+const todayTotalStat = document.getElementById('todayTotalStat');
+const todayMasteredStat = document.getElementById('todayMasteredStat');
+const navDueBadge = document.getElementById('navDueBadge');
+const todayDate = document.getElementById('todayDate');
+const navToday = document.getElementById('navToday');
+const navLibrary = document.getElementById('navLibrary');
+const navNotebook = document.getElementById('navNotebook');
+const startReviewBtn = document.getElementById('startReviewBtn');
+const quickAddBtn = document.getElementById('quickAddBtn');
+const quizPanel = document.getElementById('quizPanel');
+const quizProgress = document.getElementById('quizProgress');
+const quizWord = document.getElementById('quizWord');
+const quizPhonetic = document.getElementById('quizPhonetic');
+const quizRevealBtn = document.getElementById('quizRevealBtn');
+const quizAnswer = document.getElementById('quizAnswer');
+const quizRatings = document.getElementById('quizRatings');
+const focusEmpty = document.getElementById('focusEmpty');
 
 let isGeneratingReview = false;
 let currentStyle = null;
@@ -1977,6 +2151,91 @@ let lastReviewWords = [];        // Words used in the current review
 let reviewHistory = [];          // [ { styleId, styleLabel, rawText, words } ]
 let activeArticleIdx = -1;       // currently viewed article index
 let thisSessionReviewWords = []; // Words selected for this session (empty until article is generated)
+let reviewQueue = [];
+let quizIndex = 0;
+
+function updateTodayDashboard() {
+  if (!todayDueStat) return;
+  const due = getDueWords().length;
+  const total = words.length;
+  const mastered = words.filter(w => (w.level || 0) >= MAX_REVIEW_LEVEL).length;
+  todayDueStat.textContent = due;
+  todayTotalStat.textContent = total;
+  todayMasteredStat.textContent = mastered;
+  if (navDueBadge) navDueBadge.textContent = due;
+  startReviewBtn.textContent = due > 0 ? `开始今日复习 · ${Math.min(settings.randomCount || 10, due)} 词` : '今天已完成';
+  startReviewBtn.disabled = due === 0;
+  if (focusEmpty && !quizPanel.classList.contains('visible')) {
+    focusEmpty.innerHTML = due > 0
+      ? `<i data-lucide="layers-3" class="icon"></i><strong>有 ${due} 个词等你回忆</strong><span>点击上方按钮开始今天的复习。</span>`
+      : '<i data-lucide="check-circle-2" class="icon"></i><strong>今天没有到期单词</strong><span>去添加一个新词，开启下一轮记忆。</span>';
+    lucide.createIcons({ nodes: [focusEmpty] });
+  }
+}
+
+function renderQuizCard() {
+  if (!quizPanel) return;
+  if (!reviewQueue.length || quizIndex >= reviewQueue.length) {
+    quizPanel.classList.add('visible');
+    quizProgress.textContent = '今日复习完成';
+    quizWord.textContent = '做得很好！';
+    quizPhonetic.textContent = '';
+    quizAnswer.hidden = false;
+    quizAnswer.innerHTML = '<div class="quiz-complete">你已经完成本次主动回忆。可以继续用下方的语境强化巩固这些词。</div>';
+    quizRevealBtn.hidden = true;
+    quizRatings.classList.remove('visible');
+    return;
+  }
+  const w = reviewQueue[quizIndex];
+  quizPanel.classList.add('visible');
+  quizProgress.textContent = `第 ${quizIndex + 1} / ${reviewQueue.length} 词`;
+  quizWord.textContent = w.word;
+  quizPhonetic.textContent = w.phonetic || '';
+  quizAnswer.hidden = true;
+  quizAnswer.innerHTML = '';
+  quizRevealBtn.hidden = false;
+  quizRatings.classList.remove('visible');
+}
+
+function revealQuizAnswer() {
+  const w = reviewQueue[quizIndex];
+  if (!w) return;
+  const meanings = (w.meanings || []).map(m => `<div><strong>${escapeHtml(m.pos || '')}</strong> ${escapeHtml(m.definition || '')}</div>`).join('');
+  const example = w.examples?.[0] ? `<div class="quiz-example">${escapeHtml(w.examples[0].en || '')}<br>${escapeHtml(w.examples[0].cn || '')}</div>` : '';
+  quizAnswer.innerHTML = meanings + example;
+  quizAnswer.hidden = false;
+  quizRevealBtn.hidden = true;
+  quizRatings.classList.add('visible');
+}
+
+function rateCurrentWord(rating) {
+  const w = reviewQueue[quizIndex];
+  if (!w) return;
+  scheduleWordReview(w, rating);
+  saveWords();
+  quizIndex += 1;
+  updateDueCount();
+  updateTodayDashboard();
+  renderQuizCard();
+}
+
+function startReviewSession() {
+  reviewQueue = getRandomWordsForReview();
+  quizIndex = 0;
+  if (!reviewQueue.length) {
+    showToast('今天没有到期单词，去添加一些新词吧');
+    searchInput.focus();
+    return;
+  }
+  thisSessionReviewWords = [...reviewQueue];
+  updateDueCount();
+  renderQuizCard();
+  quizPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function setActiveNav(item) {
+  [navToday, navLibrary, navNotebook].forEach(nav => nav?.classList.toggle('active', nav === item));
+}
 
 function updateDueCount() {
   const due = getDueWords();
@@ -2005,6 +2264,7 @@ function updateDueCount() {
   if (dueLink) dueLink.addEventListener('click', openDueWords);
   const wbLink = document.getElementById('viewWordbookLink');
   if (wbLink) wbLink.addEventListener('click', openWordbook);
+  updateTodayDashboard();
 }
 
 function showReviewActions() {
@@ -2053,8 +2313,11 @@ function loadArticleFromHistory(idx) {
 async function handleStyleClick(styleId) {
   if (isGeneratingReview) return;
 
-  // Always use random selection
-  const due = getRandomWordsForReview();
+  // After a session, use the same words for context reinforcement. Before
+  // that, choose the oldest due words from the scheduler.
+  const due = thisSessionReviewWords.length
+    ? thisSessionReviewWords.filter(w => words.some(current => current.id === w.id))
+    : getRandomWordsForReview();
   
   if (due.length === 0) {
     reviewContent.innerHTML = '<div class="review-empty"><i data-lucide="party-popper" class="icon"></i> 没有待复习的单词</div>';
@@ -2095,10 +2358,9 @@ async function handleStyleClick(styleId) {
     lastReviewWords = [...due];
     thisSessionReviewWords = [...due]; // Save selected words for this session
     
-    // Advance review progress for all selected words
-    due.forEach(w => advanceWordReview(w));
-    saveWords();
-    updateDueCount(); // Update the button label text
+    // Generating context is not itself a successful recall. Progress is
+    // updated only when the learner rates a card in the active recall flow.
+    updateDueCount();
     const styleLabel = STYLES[styleId]?.label || styleId;
     reviewHistory.push({ styleId, styleLabel, rawText: text, words: [...due] });
     activeArticleIdx = reviewHistory.length - 1;
@@ -2430,11 +2692,17 @@ exportBtn.addEventListener('click', () => {
     settings: { ...settings },
     words: words
   };
+  const fileName = `单词本_${new Date().toISOString().slice(0, 10)}.json`;
+  if (window.Android && typeof window.Android.saveFile === 'function') {
+    window.Android.saveFile(fileName, JSON.stringify(exportData, null, 2));
+    showToast('请选择保存位置');
+    return;
+  }
   const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `单词本_${new Date().toISOString().slice(0, 10)}.json`;
+  a.download = fileName;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
@@ -2528,8 +2796,12 @@ function formatDate(isoStr) {
 
 function getLevelLabel(word) {
   if (word.level >= MAX_REVIEW_LEVEL) return { text: '已掌握 ✓', cls: 'mastered' };
-  if (word.level === 0) return { text: '待首次复习', cls: '' };
-  return { text: `已复习 ${word.level}/${MAX_REVIEW_LEVEL} 次`, cls: '' };
+  if (!word.dueAt || new Date(word.dueAt).getTime() <= Date.now()) {
+    return { text: word.level === 0 ? '待首次复习' : `现在可复习 · ${word.level}/${MAX_REVIEW_LEVEL}`, cls: '' };
+  }
+  const diffHours = Math.max(1, Math.ceil((new Date(word.dueAt).getTime() - Date.now()) / 3600000));
+  const dueText = diffHours < 24 ? `${diffHours} 小时后` : `${Math.ceil(diffHours / 24)} 天后`;
+  return { text: `下次复习 ${dueText}`, cls: '' };
 }
 
 function renderWordbook(filter = '') {
@@ -2865,6 +3137,10 @@ clearSearchBtn.addEventListener('click', () => {
 function init() {
   loadData();
 
+  if (todayDate) {
+    todayDate.textContent = new Intl.DateTimeFormat('zh-CN', { month: 'long', day: 'numeric', weekday: 'short' }).format(new Date());
+  }
+
   // Apply saved theme
   applyTheme(settings.theme || 'classic');
   initThemeSelector();
@@ -2892,10 +3168,24 @@ function init() {
   saveArticleBtn.addEventListener('click', handleSaveArticle);
   copyArticleBtn.addEventListener('click', handleCopyArticle);
 
+  // Today's primary actions and active recall controls
+  startReviewBtn.addEventListener('click', startReviewSession);
+  quickAddBtn.addEventListener('click', () => {
+    searchInput.focus();
+    searchInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  });
+  quizRevealBtn.addEventListener('click', revealQuizAnswer);
+  quizRatings.querySelectorAll('[data-rating]').forEach(btn => {
+    btn.addEventListener('click', () => rateCurrentWord(btn.dataset.rating));
+  });
+
+  navToday.addEventListener('click', () => { setActiveNav(navToday); document.getElementById('todaySection').scrollIntoView({ behavior: 'smooth', block: 'start' }); });
+  navLibrary.addEventListener('click', () => { setActiveNav(navLibrary); openWordbook(); });
+  navNotebook.addEventListener('click', () => { setActiveNav(navNotebook); openSavedArticles(); });
+
   // Show appropriate initial state
   if (words.length === 0) {
-    reviewContent.innerHTML = '<div class="review-empty"><i data-lucide="book-open" class="icon"></i> 搜索单词并加入单词本，开始你的学习之旅</div>';
-    reviewCard.classList.add('visible');
+    reviewCard.classList.remove('visible');
   }
   // If there are words, keep review card empty until style button is clicked
 
