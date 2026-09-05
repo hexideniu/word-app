@@ -1328,7 +1328,7 @@ header h1 {
     <div class="style-buttons" id="styleButtons">
       <button class="style-btn" data-style="auto"><i data-lucide="sparkles" class="icon-inline"></i>自动选择</button>
       <button class="style-btn" data-style="story"><i data-lucide="book-heart" class="icon-inline"></i>离奇故事</button>
-      <button class="style-btn" data-style="dialogue"><i data-lucide="message-circle" class="icon-inline"></i>有趣对话</button>
+      <button class="style-btn" data-style="dialogue"><i data-lucide="message-circle" class="icon-inline"></i>情境对话</button>
       <button class="style-btn" data-style="news"><i data-lucide="newspaper" class="icon-inline"></i>新闻资讯</button>
     </div>
     <div class="review-body">
@@ -1522,28 +1522,28 @@ const MAX_REVIEW_LEVEL = 7; // Total times to review each word
 const STYLES = {
   auto: {
     label: '自动选择',
-    prompt: '自由发挥，根据单词的语义特点选择最合适的文体和风格（如故事、对话、新闻、散文、诗歌、寓言、书信等），让文章自然有趣。'
+    prompt: '基于词义选择合适的文体和风格生成内容。'
   },
   story: {
-    label: '离奇故事',
-    prompt: '创作一篇离奇的故事，题材自选。'
+    label: '有趣故事',
+    prompt: '基于词义创作一篇有趣的故事。'
   },
   dialogue: {
-    label: '有趣对话',
-    prompt: '生成一段有趣的对话，有幽默感或反转。'
+    label: '情境对话',
+    prompt: '基于词义生成一段合理的情境对话。'
   },
   news: {
     label: '新闻资讯',
-    prompt: '创作一篇略带讽刺的新闻简讯。'
+    prompt: '基于词义创作一篇新闻简讯。'
   }
 };
 
 const WRITER_ROLES = {
-  writer: '你是一位才华横溢的作家，文笔优美，善于用生动的语言和细腻的描写打动读者。',
-  journalist: '你是一位资深记者，写作风格客观中立，注重事实和信息的准确传达。',
-  teacher: '你是一位经验丰富的老师，善于用清晰易懂的语言讲解知识，循循善诱。',
-  poet: '你是一位浪漫的诗人，文字唯美，意境深远，善于用诗意的语言表达情感。',
-  storyteller: '你是一位引人入胜的说书人，善于营造悬念，让读者欲罢不能。'
+  writer: '你是一位才华横溢的作家。',
+  journalist: '你是一位资深记者。',
+  teacher: '你是一位经验丰富的老师。',
+  poet: '你是一位浪漫的诗人。',
+  storyteller: '你是一位引人入胜的说书人。'
 };
 
 const DIFFICULTY_MAP = {
@@ -1798,7 +1798,7 @@ async function generateReviewText(wordsToReview, styleId) {
     roleDesc = WRITER_ROLES[roleKey] || WRITER_ROLES.writer;
   }
 
-  const systemPrompt = `${roleDesc}请严格遵循以下要求生成内容：
+  const systemPrompt = `设想${roleDesc}请严格遵循以下要求生成内容：
 
 ## 任务
 用提供的单词列表创作一篇英文短文。
