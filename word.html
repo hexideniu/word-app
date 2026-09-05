@@ -2039,11 +2039,13 @@ function loadArticleFromHistory(idx) {
   activeArticleIdx = idx;
   lastReviewRawText = entry.rawText;
   lastReviewWords = entry.words;
+  thisSessionReviewWords = [...entry.words];
   currentStyle = entry.styleId;
   renderReviewText(entry.rawText, entry.words);
   showReviewActions();
   reviewCard.classList.add('visible');
   renderArticleNums();
+  updateDueCount();
   // Update style button active state
   document.querySelectorAll('.style-btn').forEach(btn => {
     btn.classList.toggle('active', btn.dataset.style === entry.styleId);
