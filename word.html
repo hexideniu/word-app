@@ -1326,10 +1326,10 @@ header h1 {
       <span class="due-count" id="dueCount">计算中…</span>
     </div>
     <div class="style-buttons" id="styleButtons">
-      <button class="style-btn" data-style="auto"><i data-lucide="sparkles" class="icon-inline"></i>自动选择</button>
-      <button class="style-btn" data-style="story"><i data-lucide="book-heart" class="icon-inline"></i>离奇故事</button>
-      <button class="style-btn" data-style="dialogue"><i data-lucide="message-circle" class="icon-inline"></i>情境对话</button>
-      <button class="style-btn" data-style="news"><i data-lucide="newspaper" class="icon-inline"></i>新闻资讯</button>
+      <button class="style-btn" data-style="auto"><i data-lucide="sparkles" class="icon-inline"></i><span class="style-btn-label">自动选择</span></button>
+      <button class="style-btn" data-style="story"><i data-lucide="book-heart" class="icon-inline"></i><span class="style-btn-label">有趣故事</span></button>
+      <button class="style-btn" data-style="dialogue"><i data-lucide="message-circle" class="icon-inline"></i><span class="style-btn-label">情境对话</span></button>
+      <button class="style-btn" data-style="custom"><i data-lucide="newspaper" class="icon-inline"></i><span class="style-btn-label">自定义风格</span></button>
     </div>
     <div class="review-body">
       <div class="article-nums" id="articleNums"></div>
@@ -1431,20 +1431,14 @@ header h1 {
       <div class="hint">生成复习文章的目标英文单词数（约数）</div>
     </div>
     <div class="form-group">
-      <label for="writerRole">写作角色</label>
-      <select id="writerRole">
-        <option value="writer">作家 — 富有文学性和感染力</option>
-        <option value="journalist">记者 — 客观中立、信息密集</option>
-        <option value="teacher">老师 — 清晰易懂、循循善诱</option>
-        <option value="poet">诗人 — 唯美浪漫、意境深远</option>
-        <option value="storyteller">说书人 — 引人入胜、绘声绘色</option>
-        <option value="custom">自定义角色…</option>
-      </select>
-    </div>
-    <div class="form-group" id="customRoleGroup" style="display:none">
       <label for="customRole">自定义写作角色</label>
       <input type="text" id="customRole" placeholder="例如：幽默的朋友、资深编辑、哲学家…">
       <div class="hint">描述你想要的写作风格或角色特点</div>
+    </div>
+    <div class="form-group">
+      <label for="customStyleName">自定义文章风格</label>
+      <input type="text" id="customStyleName" placeholder="例如：科技简报、商业访谈、生活随笔…">
+      <div class="hint">设置后，页面上的“自定义风格”按钮标题会同步显示</div>
     </div>
     <div class="form-group">
       <label for="difficulty">语言难度</label>
@@ -1532,18 +1526,10 @@ const STYLES = {
     label: '情境对话',
     prompt: '基于词义生成一段合理的情境对话。'
   },
-  news: {
-    label: '新闻资讯',
-    prompt: '基于词义创作一篇新闻简讯。'
+  custom: {
+    label: '自定义风格',
+    prompt: '基于词义创作一篇符合自定义风格要求的英文短文。'
   }
-};
-
-const WRITER_ROLES = {
-  writer: '你是一位才华横溢的作家。',
-  journalist: '你是一位资深记者。',
-  teacher: '你是一位经验丰富的老师。',
-  poet: '你是一位浪漫的诗人。',
-  storyteller: '你是一位引人入胜的说书人。'
 };
 
 const DIFFICULTY_MAP = {
@@ -1560,8 +1546,8 @@ const DEFAULT_SETTINGS = {
   theme: 'classic',
   randomCount: 10,
   wordCount: 100,
-  writerRole: 'writer',
-  customRole: ''
+  customRole: '',
+  customStyleName: '自定义风格'
 };
 
 // ============================================================
@@ -1584,8 +1570,9 @@ function loadData() {
   try {
     const s = localStorage.getItem('wordApp_settings');
     settings = s ? JSON.parse(s) : { ...DEFAULT_SETTINGS };
-    // Migration: ensure theme field exists
+    // Migration: ensure theme and custom style fields exist
     if (!settings.theme) settings.theme = 'classic';
+    if (!settings.customStyleName) settings.customStyleName = '自定义风格';
   } catch { settings = { ...DEFAULT_SETTINGS }; }
 
   try {
@@ -1677,6 +1664,23 @@ function advanceWordReview(word) {
 // ============================================================
 //  API
 // ============================================================
+function getStyleLabel(styleId) {
+  if (styleId === 'custom') {
+    return (settings.customStyleName || '自定义风格').trim() || '自定义风格';
+  }
+  return STYLES[styleId]?.label || styleId;
+}
+
+function updateStyleButtons() {
+  document.querySelectorAll('.style-btn').forEach(btn => {
+    const styleId = btn.dataset.style;
+    const label = getStyleLabel(styleId);
+    const labelEl = btn.querySelector('.style-btn-label');
+    if (labelEl) labelEl.textContent = label;
+    btn.setAttribute('title', label);
+  });
+}
+
 function buildApiHeaders() {
   const headers = { 'Content-Type': 'application/json' };
   if (settings.apiKey) {
@@ -1703,8 +1707,7 @@ async function apiChat(messages, temperature = 0.3) {
     body: JSON.stringify({
       model,
       messages,
-      temperature,
-      max_tokens: 2048
+      temperature
     })
   });
 
@@ -1754,8 +1757,8 @@ async function lookupWord(word) {
 
 注意：
 - 如果英语中没有这个单词，请返回一个最有可能的单词
-- 提供 1-2 个主要释义
-- 提供 2 个例句
+- 提供主要释义
+- 提供最少2个例句
 - 不要添加任何额外文字`;
 
   const content = await apiChat([
@@ -1763,40 +1766,102 @@ async function lookupWord(word) {
     { role: 'user', content: `查询单词: ${word.trim()}` }
   ], 0);
 
-  // Try to extract JSON from the response
-  let jsonStr = content.trim();
-  // Remove potential markdown code block fences
-  jsonStr = jsonStr.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '');
-  // Find first { and last }
-  const start = jsonStr.indexOf('{');
-  const end = jsonStr.lastIndexOf('}');
-  if (start === -1 || end === -1) throw new Error('API 返回格式无法解析');
-  jsonStr = jsonStr.substring(start, end + 1);
+  function normalizeItem(item) {
+    if (typeof item === 'string') return { en: item, cn: '' };
+    if (!item || typeof item !== 'object') return null;
+    const en = item.en || item.example || item.sentence || item.exampleSentence || item.text || '';
+    const cn = item.cn || item.zh || item.translation || item.chinese || item.meaning || item.explanation || '';
+    if (en || cn) return { en: String(en), cn: String(cn) };
+    return null;
+  }
 
-  const result = JSON.parse(jsonStr);
+  function normalizeMeaning(item) {
+    if (typeof item === 'string') return { pos: '', definition: item };
+    if (!item || typeof item !== 'object') return null;
+    const definition = item.definition || item.meaning || item.zh || item.chinese || item.explanation || '';
+    const pos = item.pos || item.partOfSpeech || item.type || item.category || '';
+    if (definition) return { pos: String(pos), definition: String(definition) };
+    return null;
+  }
+
+  let jsonStr = content.trim();
+  jsonStr = jsonStr.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '');
+
+  let parsed = null;
+  const candidates = [];
+  const objectMatches = [...jsonStr.matchAll(/\{[\s\S]*?\}/g)];
+  objectMatches.forEach(match => {
+    const candidate = match[0];
+    if (candidate.includes('"word"') || candidate.includes('"meanings"') || candidate.includes('"examples"')) {
+      candidates.push(candidate);
+    }
+  });
+
+  if (candidates.length > 0) {
+    for (const candidate of candidates) {
+      try {
+        parsed = JSON.parse(candidate);
+        if (parsed && (parsed.meanings || parsed.examples || parsed.word)) break;
+      } catch {}
+    }
+  }
+
+  if (!parsed) {
+    const start = jsonStr.indexOf('{');
+    const end = jsonStr.lastIndexOf('}');
+    if (start === -1 || end === -1) throw new Error('API 返回格式无法解析');
+    parsed = JSON.parse(jsonStr.substring(start, end + 1));
+  }
+
+  const result = {
+    word: parsed.word || word.trim(),
+    phonetic: parsed.phonetic || '',
+    meanings: Array.isArray(parsed.meanings)
+      ? parsed.meanings.map(normalizeMeaning).filter(Boolean)
+      : Array.isArray(parsed.definitions)
+        ? parsed.definitions.map(normalizeMeaning).filter(Boolean)
+        : Array.isArray(parsed.senses)
+          ? parsed.senses.map(normalizeMeaning).filter(Boolean)
+          : [],
+    examples: Array.isArray(parsed.examples)
+      ? parsed.examples.map(normalizeItem).filter(Boolean)
+      : Array.isArray(parsed.exampleSentences)
+        ? parsed.exampleSentences.map(normalizeItem).filter(Boolean)
+        : Array.isArray(parsed.sentences)
+          ? parsed.sentences.map(normalizeItem).filter(Boolean)
+          : []
+  };
+
+  if (!result.meanings.length && parsed.definition) {
+    result.meanings = [{ pos: '', definition: String(parsed.definition) }];
+  }
+
+  if (!result.examples.length && parsed.example) {
+    result.examples = [normalizeItem(parsed.example)].filter(Boolean);
+  }
+
   result._cachedAt = Date.now();
   lookupCache[cacheKey] = result;
-  // Persist cache to localStorage
   try { localStorage.setItem('wordApp_lookupCache', JSON.stringify(lookupCache)); } catch {}
   return result;
 }
 
 async function generateReviewText(wordsToReview, styleId) {
-  const style = STYLES[styleId];
+  const style = STYLES[styleId] || STYLES.custom;
   if (!style) throw new Error('无效的风格');
 
   const wordList = wordsToReview.map(w => w.word);
   const difficultyDesc = DIFFICULTY_MAP[settings.difficulty] || DIFFICULTY_MAP.intermediate;
   const wordCount = settings.wordCount || 100;
+  const customStyleText = (settings.customStyleName || '自定义风格').trim() || '自定义风格';
 
-  // Get writer role description
-  const roleKey = settings.writerRole || 'writer';
-  let roleDesc;
-  if (roleKey === 'custom' && settings.customRole) {
-    roleDesc = `你是${settings.customRole}。`;
-  } else {
-    roleDesc = WRITER_ROLES[roleKey] || WRITER_ROLES.writer;
-  }
+  const roleDesc = settings.customRole
+    ? `你是${settings.customRole}。`
+    : '你是一位经验丰富的英语写作导师。';
+
+  const stylePrompt = styleId === 'custom'
+    ? `以“${customStyleText}”这一特定风格为核心，保持该风格的语气、节奏和表达方式。`
+    : style.prompt;
 
   const systemPrompt = `设想${roleDesc}请严格遵循以下要求生成内容：
 
@@ -1806,7 +1871,7 @@ async function generateReviewText(wordsToReview, styleId) {
 ## 要求
 1. 字数：约 ${wordCount} 词
 2. 语言难度：${difficultyDesc}
-3. 风格：${style.prompt}
+3. 风格：${stylePrompt}
 4. 必须包含列表中的全部单词
 5. 短文需自然流畅、有实际意义，不应是单词的简单罗列
 
@@ -2101,7 +2166,7 @@ async function handleStyleClick(styleId) {
     due.forEach(w => advanceWordReview(w));
     saveWords();
     updateDueCount(); // Update the button label text
-    const styleLabel = STYLES[styleId]?.label || styleId;
+    const styleLabel = getStyleLabel(styleId);
     reviewHistory.push({ styleId, styleLabel, rawText: text, words: [...due] });
     activeArticleIdx = reviewHistory.length - 1;
     renderArticleNums();
@@ -2199,7 +2264,7 @@ function handleSaveArticle() {
   const englishText = parts[0]?.trim() || '';
   const chineseText = parts[1]?.trim() || '';
   const wordList = lastReviewWords.map(w => w.word);
-  const styleLabel = currentStyle ? STYLES[currentStyle].label : '';
+  const styleLabel = currentStyle ? getStyleLabel(currentStyle) : '';
 
   const article = {
     id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
@@ -2350,9 +2415,8 @@ const apiModelInput = document.getElementById('apiModel');
 const difficultySelect = document.getElementById('difficulty');
 const randomCountInput = document.getElementById('randomCount');
 const wordCountInput = document.getElementById('wordCount');
-const writerRoleSelect = document.getElementById('writerRole');
+const customStyleNameInput = document.getElementById('customStyleName');
 const customRoleInput = document.getElementById('customRole');
-const customRoleGroup = document.getElementById('customRoleGroup');
 
 function openSettings() {
   apiEndpointInput.value = settings.apiEndpoint || '';
@@ -2361,12 +2425,8 @@ function openSettings() {
   difficultySelect.value = settings.difficulty || 'intermediate';
   randomCountInput.value = settings.randomCount || 10;
   wordCountInput.value = settings.wordCount || 100;
-  writerRoleSelect.value = settings.writerRole || 'writer';
+  customStyleNameInput.value = settings.customStyleName || '自定义风格';
   customRoleInput.value = settings.customRole || '';
-
-  // Show/hide custom role input based on selection
-  customRoleGroup.style.display = writerRoleSelect.value === 'custom' ? '' : 'none';
-
   // Update theme selector active state
   const selector = document.getElementById('themeSelector');
   selector.querySelectorAll('.theme-option').forEach(opt => {
@@ -2387,14 +2447,16 @@ function saveSettingsHandler() {
   settings.difficulty = difficultySelect.value;
   settings.randomCount = parseInt(randomCountInput.value) || 10;
   settings.wordCount = parseInt(wordCountInput.value) || 100;
-  settings.writerRole = writerRoleSelect.value;
+  settings.customStyleName = customStyleNameInput.value.trim() || '自定义风格';
   settings.customRole = customRoleInput.value.trim();
+  delete settings.writerRole;
   // theme is already saved live on click, but keep this as fallback
   const activeTheme = document.querySelector('.theme-option.active');
   if (activeTheme) settings.theme = activeTheme.dataset.theme;
 
   saveSettings();
   applyTheme(settings.theme);
+  updateStyleButtons();
   updateDueCount();
   closeSettings();
   showToast('设置已保存');
@@ -2416,9 +2478,9 @@ toggleApiKeyBtn.addEventListener('click', () => {
   lucide.createIcons({ nodes: [toggleApiKeyBtn] });
 });
 
-// Writer role toggle
-writerRoleSelect.addEventListener('change', () => {
-  customRoleGroup.style.display = writerRoleSelect.value === 'custom' ? '' : 'none';
+customStyleNameInput.addEventListener('input', () => {
+  settings.customStyleName = customStyleNameInput.value.trim() || '自定义风格';
+  updateStyleButtons();
 });
 
 exportBtn.addEventListener('click', () => {
@@ -2884,6 +2946,8 @@ function init() {
   saveWords();
 
   searchBtn.addEventListener('click', handleSearch);
+
+  updateStyleButtons();
 
   // Style buttons
   document.querySelectorAll('.style-btn').forEach(btn => {
